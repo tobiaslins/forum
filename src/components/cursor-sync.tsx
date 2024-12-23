@@ -1,6 +1,5 @@
-import { useCoState } from "@/app/jazz";
 import { CursorLocation, Forum } from "@/schema";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 export function CursorSync({ forum }: { forum: Forum }) {
   const lastCallRef = useRef(0);
@@ -35,8 +34,8 @@ export function CursorSync({ forum }: { forum: Forum }) {
       forum.cursorLocations?.push({
         x: e.clientX,
         y: e.clientY,
-        screenWidth: window.innerWidth,
-        screenHeight: window.innerHeight,
+        innerWidth: window.innerWidth,
+        innerHeight: window.innerHeight,
       });
     }, 50),
     []
@@ -55,15 +54,19 @@ export function CursorSync({ forum }: { forum: Forum }) {
     <div>
       {allCursors.map((cursor) => {
         if (cursor.by.isMe) return null;
-        if (cursor.madeAt.getTime() < Date.now() - 1000 * 60 * 5) return null;
+        if (cursor.madeAt.getTime() < Date.now() - 1000 * 20) return null;
+
+        const otherWidth = cursor.value.innerWidth;
+        const cursorX = cursor.value.x / otherWidth;
+        const cursorY = cursor.value.y;
 
         return (
           <div
             key={cursor.id}
             className="w-4 h-4 backdrop-filter backdrop-invert rounded-full absolute transition-all duration-100"
             style={{
-              top: cursor.value.y,
-              left: cursor.value.x,
+              top: cursorY,
+              left: cursorX * 100 + "%",
             }}
           />
         );

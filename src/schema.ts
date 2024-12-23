@@ -48,8 +48,8 @@ export class CursorLocation extends CoFeed.Of(
   co.json<{
     x: number;
     y: number;
-    screenWidth: number;
-    screenHeight: number;
+    innerHeight: number;
+    innerWidth: number;
   }>()
 ) {}
 
