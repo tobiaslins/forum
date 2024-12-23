@@ -1,22 +1,23 @@
-"use client";
+'use client';
 
-import { useRef, useState } from "react";
-import { Topic, Comment, Reactions, ListOfImages } from "@/schema";
-import { useAccount } from "@/app/jazz";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Group, ImageDefinition } from "jazz-tools";
-import { createImage } from "jazz-browser-media-images";
+import { useRef, useState } from 'react';
+import { Topic, Comment, Reactions, ListOfImages } from '@/schema';
+import { useAccount } from '@/app/jazz';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Group, ImageDefinition } from 'jazz-tools';
+import { createImage } from 'jazz-browser-media-images';
 
 export function NewPostForm({ topic }: { topic: Topic }) {
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState('');
   const [attachedImages, setAttachedImages] = useState<File[]>([]);
   const { me } = useAccount();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const group = Group.create({ owner: me });
-    group.addMember("everyone", "reader");
+    group.addMember('everyone', 'reader');
 
     const imgs: ImageDefinition[] = [];
     for (const image of attachedImages) {
@@ -27,7 +28,7 @@ export function NewPostForm({ topic }: { topic: Topic }) {
     }
 
     const reactionsGroup = Group.create({ owner: me });
-    reactionsGroup.addMember("everyone", "writer");
+    reactionsGroup.addMember('everyone', 'writer');
 
     topic.comments?.push(
       Comment.create(
@@ -43,7 +44,7 @@ export function NewPostForm({ topic }: { topic: Topic }) {
     );
 
     topic.postCount += 1;
-    setContent("");
+    setContent('');
   };
 
   const handleDrop = (e: React.DragEvent<HTMLTextAreaElement>) => {
@@ -52,7 +53,7 @@ export function NewPostForm({ topic }: { topic: Topic }) {
     // Get the dropped files
     const files = e.dataTransfer.files;
 
-    if (files.length > 0 && files[0].type.startsWith("image/")) {
+    if (files.length > 0 && files[0].type.startsWith('image/')) {
       const file = files[0];
       setAttachedImages([...attachedImages, file]); // Store the raw File object
     }
