@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   CoMap,
@@ -9,9 +9,9 @@ import {
   CoFeed,
   ImageDefinition,
   CoStream,
-} from 'jazz-tools';
+} from "jazz-tools";
 
-export const ReactionTypes = ['love', 'haha', null] as const;
+export const ReactionTypes = ["love", "haha", null] as const;
 export type ReactionType = (typeof ReactionTypes)[number];
 export class Reactions extends CoFeed.Of(co.json<ReactionType>()) {}
 
@@ -27,7 +27,6 @@ export class Comment extends CoMap {
 }
 
 export class ListOfComments extends CoList.Of(co.ref(Comment)) {}
-
 export class ListOfImages extends CoList.Of(co.ref(ImageDefinition)) {}
 
 export class Topic extends CoMap {
@@ -85,7 +84,7 @@ export class JazzAccount extends Account {
         { forums: ListOfForums.create([], { owner: this }) },
         { owner: this }
       );
-      console.log('created root', this.root);
+      console.log("created root", this.root);
     }
   }
 }
