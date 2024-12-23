@@ -23,7 +23,7 @@ export default function Home() {
   const { me } = useAccount();
   const router = useRouter();
   const [forumID, setForumID] = useState<ID<Forum>>(
-    "co_zgjL11bZ9ee8Z6DefHBAtYASgYs"
+    "co_zgjL11bZ9ee8Z6DefHBAtYASgYs" as ID<Forum>
   );
   const [newTopicTitle, setNewTopicTitle] = useState("");
   const [newTopicBody, setNewTopicBody] = useState("");
