@@ -5,7 +5,7 @@ import { MoreHorizontal, ThumbsUp, MessageCircle } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { NewPostForm } from "./new-post-form";
 import { Button } from "@/components/ui/button";
-import { Topic } from "@/schema";
+import { Forum, Topic } from "@/schema";
 import { useCoState } from "@/app/jazz";
 import { formatDistanceToNow } from "date-fns";
 import ReactMarkdown from "react-markdown";
@@ -19,6 +19,7 @@ import { use } from "react";
 import { ReactionOverview } from "@/components/reactions";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProgressiveImg } from "jazz-react";
+import { CursorSync } from "@/components/cursor-sync";
 
 export default function TopicPage({
   params,
@@ -27,9 +28,11 @@ export default function TopicPage({
 }) {
   const id = use(params)?.id;
   const topic = useCoState(Topic, id as any, { comments: [{}] });
+  const forum = useCoState(Forum, topic?.forum?.id as any);
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
+      {forum && <CursorSync forum={forum} />}
       <div className="flex items-center justify-between">
         <Link
           href={topic?.forum?.id ? `/?forum=${topic?.forum?.id}` : "/"}

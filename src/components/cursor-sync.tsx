@@ -60,7 +60,7 @@ export function CursorSync({ forum }: { forum: Forum }) {
         return (
           <div
             key={cursor.id}
-            className="w-4 h-4 bg-red-500 rounded-full absolute transition-all duration-100"
+            className="w-4 h-4 backdrop-filter backdrop-invert rounded-full absolute transition-all duration-100"
             style={{
               top: cursor.value.y,
               left: cursor.value.x,
