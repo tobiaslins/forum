@@ -65,7 +65,7 @@ export default function TopicPage({
           )}
         </div>
 
-        <NewPostForm topic={topic} />
+        {topic && <NewPostForm topic={topic} />}
 
         <div className="divide-y divide-border">
           {topic?.comments.map((comment, idx) => (
