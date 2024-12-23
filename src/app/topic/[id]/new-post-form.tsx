@@ -16,6 +16,8 @@ export function NewPostForm({ topic }: { topic: Topic }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!content.trim()) return;
+
     const group = Group.create({ owner: me });
     group.addMember('everyone', 'reader');
 
