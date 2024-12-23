@@ -63,7 +63,7 @@ export default function TopicPage({
           {topic?.images && (
             <div className="flex flex-wrap gap-2">
               {topic.images.map((image) => (
-                <ProgressiveImg image={image}>
+                <ProgressiveImg key={image?.id} image={image}>
                   {({ src }) => <img src={src} className="w-24" />}
                 </ProgressiveImg>
               ))}
@@ -123,7 +123,7 @@ export default function TopicPage({
                     {comment.images && (
                       <div className="flex flex-wrap gap-2">
                         {comment.images.map((image) => (
-                          <ProgressiveImg image={image}>
+                          <ProgressiveImg key={image?.id} image={image}>
                             {({ src }) => (
                               <img
                                 className="w-24 max-w-full rounded border"

@@ -52,9 +52,12 @@ export function CursorSync({ forum }: { forum: Forum }) {
   const allCursors = Object.values(forum.cursorLocations ?? {});
   return (
     <div>
-      {allCursors.map((cursor) => {
-        if (cursor.by.isMe) return null;
-        if (cursor.madeAt.getTime() < Date.now() - 1000 * 20) return null;
+      {allCursors.map((cursor: CursorLocation["inCurrentSession"]) => {
+        if (cursor?.by?.isMe) return null;
+        if (cursor && cursor?.madeAt.getTime() < Date.now() - 1000 * 20)
+          return null;
+
+        if (!cursor) return null;
 
         const otherWidth = cursor.value.innerWidth;
         const cursorX = cursor.value.x / otherWidth;
@@ -62,7 +65,7 @@ export function CursorSync({ forum }: { forum: Forum }) {
 
         return (
           <div
-            key={cursor.id}
+            key={cursor.tx.txIndex}
             className="w-4 h-4 backdrop-filter backdrop-invert rounded-full absolute transition-all duration-100"
             style={{
               top: cursorY,
