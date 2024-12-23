@@ -34,7 +34,7 @@ export default function Home() {
   const searchParams = useSearchParams();
   const [forumID, setForumID] = useState<ID<Forum>>(
     (searchParams.get("forum") as ID<Forum>) ||
-      ("co_zF5AYiGV3P3NFhAicXpqqcjP5KR" as ID<Forum>)
+      ("co_zF5AYiGV3P3NFhAicXpqqcjP5KR" as ID<Forum>),
   );
 
   const [newTopicImages, setNewTopicImages] = useState<File[]>([]);
@@ -55,7 +55,7 @@ export default function Home() {
         topics: ListOfTopics.create([], { owner: group }),
         cursorLocations: CursorLocation.create([], { owner: group }),
       },
-      { owner: group }
+      { owner: group },
     );
     setForumID(newForum.id);
     router.push(`/?forum=${newForum.id}`);
@@ -102,8 +102,8 @@ export default function Home() {
           images: ListOfImages.create(imgs, { owner: forum._owner }),
           forum,
         },
-        { owner: topicGroup }
-      )
+        { owner: topicGroup },
+      ),
     );
     setNewTopicTitle("");
     setNewTopicBody("");
@@ -197,7 +197,7 @@ export default function Home() {
                               className="absolute -top-2 -right-2 bg-red-500 w-6 p-2 text-block text-white rounded-full w-2 h-2 text-xs flex items-center justify-center"
                               onClick={() => {
                                 setNewTopicImages(
-                                  newTopicImages.filter((i) => i !== image)
+                                  newTopicImages.filter((i) => i !== image),
                                 );
                               }}
                             >

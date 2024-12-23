@@ -1,28 +1,28 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { MoreHorizontal, ThumbsUp, MessageCircle } from 'lucide-react';
-import { Avatar } from '@/components/ui/avatar';
-import { NewPostForm } from './new-post-form';
-import { Button } from '@/components/ui/button';
-import { Topic, Comment, Reactions, ListOfImages, Forum } from '@/schema';
-import { useAccount, useCoState } from '@/app/jazz';
-import { formatDistanceToNow } from 'date-fns';
-import ReactMarkdown from 'react-markdown';
+import Link from "next/link";
+import { MoreHorizontal, ThumbsUp, MessageCircle } from "lucide-react";
+import { Avatar } from "@/components/ui/avatar";
+import { NewPostForm } from "./new-post-form";
+import { Button } from "@/components/ui/button";
+import { Topic, Comment, Reactions, ListOfImages, Forum } from "@/schema";
+import { useAccount, useCoState } from "@/app/jazz";
+import { formatDistanceToNow } from "date-fns";
+import ReactMarkdown from "react-markdown";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { use, useState } from 'react';
-import { ReactionOverview } from '@/components/reactions';
-import { Skeleton } from '@/components/ui/skeleton';
-import { ProgressiveImg } from 'jazz-react';
-import { Textarea } from '@/components/ui/textarea';
-import { Group, ImageDefinition } from 'jazz-tools';
-import { createImage } from 'jazz-browser-media-images';
-import { CursorSync } from '@/components/cursor-sync';
+} from "@/components/ui/dropdown-menu";
+import { use, useState } from "react";
+import { ReactionOverview } from "@/components/reactions";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ProgressiveImg } from "jazz-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Group, ImageDefinition } from "jazz-tools";
+import { createImage } from "jazz-browser-media-images";
+import { CursorSync } from "@/components/cursor-sync";
 
 type CommentNode = {
   comment: Comment;
@@ -101,7 +101,7 @@ export default function TopicPage({
       {forum && <CursorSync forum={forum} />}
       <div className="flex items-center justify-between">
         <Link
-          href={topic?.forum?.id ? `/?forum=${topic?.forum?.id}` : '/'}
+          href={topic?.forum?.id ? `/?forum=${topic?.forum?.id}` : "/"}
           className="text-primary hover:text-primary/90"
         >
           ← Back
@@ -154,7 +154,7 @@ function CommentComponent({
   comment: Comment;
   topic: Topic;
 }) {
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState("");
   const [attachedImages, setAttachedImages] = useState<File[]>([]);
   const [isReplyOpen, setIsReplyOpen] = useState(false);
   const { me } = useAccount();
@@ -163,7 +163,7 @@ function CommentComponent({
     e.preventDefault();
 
     const group = Group.create({ owner: me });
-    group.addMember('everyone', 'reader');
+    group.addMember("everyone", "reader");
 
     const imgs: ImageDefinition[] = [];
     for (const image of attachedImages) {
@@ -174,7 +174,7 @@ function CommentComponent({
     }
 
     const reactionsGroup = Group.create({ owner: me });
-    reactionsGroup.addMember('everyone', 'writer');
+    reactionsGroup.addMember("everyone", "writer");
 
     topic.comments?.push(
       Comment.create(
@@ -186,22 +186,22 @@ function CommentComponent({
           reactions: Reactions.create([], { owner: reactionsGroup }),
           images: ListOfImages.create(imgs, { owner: group }),
         },
-        { owner: group }
-      )
+        { owner: group },
+      ),
     );
 
     topic.postCount += 1;
     setAttachedImages([]);
     setIsReplyOpen(false);
-    setContent('');
+    setContent("");
   };
 
   return (
-    <div className={'p-4'}>
+    <div className={"p-4"}>
       <div className="flex gap-4">
         <Avatar
           src="/placeholder.svg"
-          alt={comment._edits?.content?.by?.profile?.name ?? ''}
+          alt={comment._edits?.content?.by?.profile?.name ?? ""}
           status="online"
         />
         <div className="flex-1 space-y-3">
@@ -279,7 +279,7 @@ function CommentComponent({
                   size="sm"
                   onClick={() => {
                     setIsReplyOpen(false);
-                    setContent('');
+                    setContent("");
                   }}
                 >
                   Cancel
