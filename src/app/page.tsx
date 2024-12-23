@@ -70,7 +70,7 @@ export default function Home() {
 
   useEffect(() => {
     if (joinForum && !hasAdded.current) {
-      meState?.root?.forums?.push(joinForum as ID<Forum>);
+      meState?.root?.forums?.push(joinForum as any);
       hasAdded.current = true;
     }
   }, [joinForum, meState]);
