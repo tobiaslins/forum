@@ -52,13 +52,27 @@ export class Forum extends CoMap {
 
 export class JazzProfile extends Profile {}
 
+export class JazzRoot extends CoMap {
+  forums = co.ref(ListOfForums);
+}
+export class ListOfForums extends CoList.Of(co.ref(Forum)) {}
+
 export class JazzAccount extends Account {
   profile = co.ref(JazzProfile);
+  root = co.ref(JazzRoot);
 
   /** The account migration is run on account creation and on every log-in.
    *  You can use it to set up the account root and any other initial CoValues you need.
    */
   migrate(this: JazzAccount, creationProps?: { name: string }) {
     super.migrate(creationProps);
+
+    if (!this._refs.root) {
+      this.root = JazzRoot.create(
+        { forums: ListOfForums.create([], { owner: this }) },
+        { owner: this }
+      );
+      console.log("created root", this.root);
+    }
   }
 }

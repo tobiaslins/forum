@@ -35,7 +35,7 @@ export default function TopicPage({
           href={`/?forum=${topic?.forum?.id}`}
           className="text-primary hover:text-primary/90"
         >
-          ← Back to Topics
+          ← Back
         </Link>
         <div className="flex gap-2">
           <Button variant="outline">Latest</Button>
