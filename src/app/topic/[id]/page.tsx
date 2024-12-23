@@ -32,7 +32,7 @@ export default function TopicPage({
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <Link
-          href={`/?forum=${topic?.forum?.id}`}
+          href={topic?.forum?.id ? `/?forum=${topic?.forum?.id}` : "/"}
           className="text-primary hover:text-primary/90"
         >
           ← Back
