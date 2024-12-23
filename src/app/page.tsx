@@ -90,7 +90,7 @@ export default function Home() {
   return (
     <div className="max-w-3xl mx-auto p-4">
       <div className="bg-card rounded-lg shadow-sm overflow-hidden">
-        <div className="p-4 border-b border-border flex items-center justify-between">
+        <div className="p-4 flex items-center justify-between">
           <h1 className="text-xl font-semibold text-card-foreground">
             {forum.name}
           </h1>
@@ -131,7 +131,7 @@ export default function Home() {
             </DialogContent>
           </Dialog>
         </div>
-        <div className="divide-y divide-border">
+        <div className="divide-y divide-border border rounded-lg">
           {forum.topics.map((topic) => (
             <Link
               key={topic.id}

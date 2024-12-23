@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { use } from "react";
+import { ReactionOverview } from "@/components/reactions";
 
 export default function TopicPage({
   params,
@@ -62,7 +63,7 @@ export default function TopicPage({
         <NewPostForm topic={topic} />
 
         <div className="divide-y divide-border">
-          {topic.comments.map((comment) => (
+          {topic.comments.map((comment, idx) => (
             <div key={comment.id} className="p-4">
               <div className="flex gap-4">
                 <Avatar
@@ -93,7 +94,12 @@ export default function TopicPage({
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive">
+                        <DropdownMenuItem
+                          onClick={() => {
+                            topic.comments.splice(idx, 1);
+                          }}
+                          className="text-destructive"
+                        >
                           Delete
                         </DropdownMenuItem>
                       </DropdownMenuContent>
@@ -101,15 +107,9 @@ export default function TopicPage({
                   </div>
                   <p className="text-card-foreground">{comment.content}</p>
                   <div className="flex items-center gap-4">
-                    <button
-                      className="flex items-center gap-2 text-muted-foreground hover:text-card-foreground"
-                      onClick={() => {
-                        comment.likes += 1;
-                      }}
-                    >
-                      <ThumbsUp className="h-4 w-4" />
-                      <span className="text-sm">{comment.likes}</span>
-                    </button>
+                    {comment.reactions && (
+                      <ReactionOverview petReactions={comment.reactions} />
+                    )}
                   </div>
                 </div>
               </div>

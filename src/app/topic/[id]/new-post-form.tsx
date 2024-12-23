@@ -1,18 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { Topic, Comment } from "@/schema";
+import { Topic, Comment, Reactions } from "@/schema";
 import { useAccount } from "@/app/jazz";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Group } from "jazz-tools";
 
 export function NewPostForm({ topic }: { topic: Topic }) {
   const [content, setContent] = useState("");
-
+  const { me } = useAccount();
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("topic", content, topic);
+    const group = Group.create({ owner: me });
+    group.addMember("everyone", "reader");
+
+    const reactionsGroup = Group.create({ owner: me });
+    reactionsGroup.addMember("everyone", "writer");
 
     topic.comments?.push(
       Comment.create(
@@ -20,12 +25,13 @@ export function NewPostForm({ topic }: { topic: Topic }) {
           content,
           createdAt: Date.now(),
           likes: 0,
+          reactions: Reactions.create([], { owner: reactionsGroup }),
         },
-        { owner: topic._owner }
+        { owner: group }
       )
     );
 
-    // topic.postCount += 1;
+    topic.postCount += 1;
     setContent("");
   };
 

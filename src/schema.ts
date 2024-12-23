@@ -1,6 +1,6 @@
 "use client";
 
-import { CoMap, CoList, co, Profile, Account } from "jazz-tools";
+import { CoMap, CoList, co, Profile, Account, CoFeed } from "jazz-tools";
 
 // export class UserProfile extends CoMap {
 //   name = co.string;
@@ -8,10 +8,15 @@ import { CoMap, CoList, co, Profile, Account } from "jazz-tools";
 //   // Add other profile fields as needed
 // }
 
+export const ReactionTypes = ["love", "haha", null] as const;
+export type ReactionType = (typeof ReactionTypes)[number];
+export class Reactions extends CoFeed.Of(co.json<ReactionType>()) {}
+
 export class Comment extends CoMap {
   content = co.string;
   createdAt = co.number;
   likes = co.number;
+  reactions = co.ref(Reactions);
 }
 
 export class ListOfComments extends CoList.Of(co.ref(Comment)) {}
