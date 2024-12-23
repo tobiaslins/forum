@@ -8,6 +8,7 @@ import {
   Account,
   CoFeed,
   ImageDefinition,
+  CoStream,
 } from 'jazz-tools';
 
 export const ReactionTypes = ['love', 'haha', null] as const;
@@ -43,11 +44,23 @@ export class Topic extends CoMap {
   forum = co.ref(Forum);
 }
 
+export class CursorLocation extends CoFeed.Of(
+  co.json<{
+    x: number;
+    y: number;
+    innerHeight: number;
+    innerWidth: number;
+  }>()
+) {}
+
 export class ListOfTopics extends CoList.Of(co.ref(Topic)) {}
 
 export class Forum extends CoMap {
   name = co.string;
   topics = co.ref(ListOfTopics);
+  cursorLocations = co.ref(CursorLocation, {
+    optional: true,
+  });
 }
 
 export class JazzProfile extends Profile {}

@@ -126,6 +126,7 @@ export function ReactionsBar({
                 <TooltipProvider>
                   {Object.entries(AVAILABLE_REACTIONS).map(([key, value]) => (
                     <button
+                      key={`${key}-${value.emoji}`}
                       onClick={() => {
                         onReact(key);
                         setShowPicker(false);

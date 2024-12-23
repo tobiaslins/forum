@@ -5,7 +5,7 @@ import { MoreHorizontal, ThumbsUp, MessageCircle } from 'lucide-react';
 import { Avatar } from '@/components/ui/avatar';
 import { NewPostForm } from './new-post-form';
 import { Button } from '@/components/ui/button';
-import { Topic, Comment, Reactions, ListOfImages } from '@/schema';
+import { Topic, Comment, Reactions, ListOfImages, Forum } from '@/schema';
 import { useAccount, useCoState } from '@/app/jazz';
 import { formatDistanceToNow } from 'date-fns';
 import ReactMarkdown from 'react-markdown';
@@ -22,6 +22,7 @@ import { ProgressiveImg } from 'jazz-react';
 import { Textarea } from '@/components/ui/textarea';
 import { Group, ImageDefinition } from 'jazz-tools';
 import { createImage } from 'jazz-browser-media-images';
+import { CursorSync } from '@/components/cursor-sync';
 
 type CommentNode = {
   comment: Comment;
@@ -35,6 +36,7 @@ export default function TopicPage({
 }) {
   const id = use(params)?.id;
   const topic = useCoState(Topic, id as any, { comments: [{}] });
+  const forum = useCoState(Forum, topic?.forum?.id as any);
 
   if (!topic) {
     return <div>Loading...</div>;
@@ -96,6 +98,7 @@ export default function TopicPage({
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
+      {forum && <CursorSync forum={forum} />}
       <div className="flex items-center justify-between">
         <Link
           href={topic?.forum?.id ? `/?forum=${topic?.forum?.id}` : '/'}
@@ -126,7 +129,7 @@ export default function TopicPage({
           {topic?.images && (
             <div className="flex flex-wrap gap-2">
               {topic.images.map((image) => (
-                <ProgressiveImg image={image}>
+                <ProgressiveImg key={image?.id} image={image}>
                   {({ src }) => <img src={src} className="w-24" />}
                 </ProgressiveImg>
               ))}

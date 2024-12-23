@@ -7,6 +7,7 @@ import {
   Topic,
   ListOfComments,
   ListOfImages,
+  CursorLocation,
 } from "../schema";
 import { useAccount, useCoState } from "./jazz";
 import { Group, ID, ImageDefinition } from "jazz-tools";
@@ -24,6 +25,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createImage } from "jazz-browser-media-images";
+import { CursorSync } from "@/components/cursor-sync";
 
 export default function Home() {
   const { me: meState } = useAccount({ root: { forums: [] } });
@@ -35,7 +37,6 @@ export default function Home() {
       ("co_zF5AYiGV3P3NFhAicXpqqcjP5KR" as ID<Forum>)
   );
 
-  console.log(forumID);
   const [newTopicImages, setNewTopicImages] = useState<File[]>([]);
   const [newTopicTitle, setNewTopicTitle] = useState("");
   const [newTopicBody, setNewTopicBody] = useState("");
@@ -52,6 +53,7 @@ export default function Home() {
       {
         name: name,
         topics: ListOfTopics.create([], { owner: group }),
+        cursorLocations: CursorLocation.create([], { owner: group }),
       },
       { owner: group }
     );
@@ -120,6 +122,7 @@ export default function Home() {
 
   return (
     <div className="flex gap-4">
+      <CursorSync forum={forum} />
       <div className="w-64 bg-card rounded-lg shadow-sm p-4 h-fit">
         <h2 className="text-lg font-semibold mb-4">Forums</h2>
         <div className="space-y-2">
@@ -231,7 +234,7 @@ export default function Home() {
                 <h2 className="text-primary font-medium">{topic.title}</h2>
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <MessageCircle className="h-4 w-4" />
-                  <span className="text-sm">{topic.postCount}</span>
+                  <span className="text-sm">{topic.comments?.length}</span>
                 </div>
               </Link>
             ))}
