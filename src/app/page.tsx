@@ -13,7 +13,7 @@ import { Group, ID, ImageDefinition } from "jazz-tools";
 import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Dialog,
   DialogContent,
@@ -29,8 +29,10 @@ import { createImage } from "jazz-browser-media-images";
 export default function Home() {
   const { me } = useAccount();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [forumID, setForumID] = useState<ID<Forum>>(
-    "co_zgjL11bZ9ee8Z6DefHBAtYASgYs" as ID<Forum>
+    (searchParams.get("forum") as ID<Forum>) ||
+      ("co_zFRaK3Wju4gQt6r1Jq28hh8Awxm" as ID<Forum>)
   );
   const [newTopicImages, setNewTopicImages] = useState<File[]>([]);
   const [newTopicTitle, setNewTopicTitle] = useState("");
@@ -47,13 +49,13 @@ export default function Home() {
 
   const forum = useCoState(Forum, forumID, { topics: [{}] });
 
-  const createForum = () => {
+  const createForum = (name: string) => {
     const group = Group.create({ owner: me });
     group.addMember("everyone", "writer");
 
     const newForum = Forum.create(
       {
-        name: "Community Forum",
+        name: name,
         topics: ListOfTopics.create([], { owner: group }),
       },
       { owner: group }
@@ -61,6 +63,14 @@ export default function Home() {
     setForumID(newForum.id);
     router.push(`/?forum=${newForum.id}`);
   };
+
+  const newForum = searchParams.get("new-forum");
+
+  useEffect(() => {
+    if (newForum) {
+      createForum(newForum);
+    }
+  }, [newForum]);
 
   const createTopic = async () => {
     if (!forum || !newTopicTitle.trim() || !newTopicBody.trim()) return;
@@ -82,9 +92,9 @@ export default function Home() {
           title: newTopicTitle.trim(),
           body: newTopicBody.trim(),
           postCount: 1,
-          comments: ListOfComments.create([], { owner: forum._owner }),
           createdAt: Date.now(),
-          images: ListOfImages.create(imgs, { owner: topicGroup }),
+          comments: ListOfComments.create([], { owner: forum._owner }),
+          images: ListOfImages.create(imgs, { owner: forum._owner }),
         },
         { owner: topicGroup }
       )
@@ -97,7 +107,7 @@ export default function Home() {
   if (!forum) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
-        <Button onClick={createForum} variant="default">
+        <Button onClick={() => createForum("Forum")} variant="default">
           Create Forum
         </Button>
       </div>
