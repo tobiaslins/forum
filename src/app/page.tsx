@@ -32,7 +32,7 @@ export default function Home() {
   const searchParams = useSearchParams();
   const [forumID, setForumID] = useState<ID<Forum>>(
     (searchParams.get("forum") as ID<Forum>) ||
-      ("co_zFRaK3Wju4gQt6r1Jq28hh8Awxm" as ID<Forum>)
+      ("co_zF5AYiGV3P3NFhAicXpqqcjP5KR" as ID<Forum>)
   );
   const [newTopicImages, setNewTopicImages] = useState<File[]>([]);
   const [newTopicTitle, setNewTopicTitle] = useState("");
@@ -95,6 +95,7 @@ export default function Home() {
           createdAt: Date.now(),
           comments: ListOfComments.create([], { owner: forum._owner }),
           images: ListOfImages.create(imgs, { owner: forum._owner }),
+          forum,
         },
         { owner: topicGroup }
       )

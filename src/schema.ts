@@ -39,6 +39,8 @@ export class Topic extends CoMap {
   images = co.ref(ListOfImages, {
     optional: true,
   });
+
+  forum = co.ref(Forum);
 }
 
 export class ListOfTopics extends CoList.Of(co.ref(Topic)) {}

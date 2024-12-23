@@ -31,7 +31,10 @@ export default function TopicPage({
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
-        <Link href="/" className="text-primary hover:text-primary/90">
+        <Link
+          href={`/?forum=${topic?.forum?.id}`}
+          className="text-primary hover:text-primary/90"
+        >
           ← Back to Topics
         </Link>
         <div className="flex gap-2">
