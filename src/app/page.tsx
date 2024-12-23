@@ -1,9 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Forum, ListOfTopics, Topic, ListOfComments } from "../schema";
+import {
+  Forum,
+  ListOfTopics,
+  Topic,
+  ListOfComments,
+  ListOfImages,
+} from "../schema";
 import { useAccount, useCoState } from "./jazz";
-import { Group, ID } from "jazz-tools";
+import { Group, ID, ImageDefinition } from "jazz-tools";
 import { MessageCircle } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -18,6 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { createImage } from "jazz-browser-media-images";
 
 export default function Home() {
   const { me } = useAccount();
@@ -25,6 +32,7 @@ export default function Home() {
   const [forumID, setForumID] = useState<ID<Forum>>(
     "co_zgjL11bZ9ee8Z6DefHBAtYASgYs" as ID<Forum>
   );
+  const [newTopicImages, setNewTopicImages] = useState<File[]>([]);
   const [newTopicTitle, setNewTopicTitle] = useState("");
   const [newTopicBody, setNewTopicBody] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -54,11 +62,19 @@ export default function Home() {
     router.push(`/?forum=${newForum.id}`);
   };
 
-  const createTopic = () => {
+  const createTopic = async () => {
     if (!forum || !newTopicTitle.trim() || !newTopicBody.trim()) return;
 
     const topicGroup = Group.create({ owner: me });
     topicGroup.addMember("everyone", "reader");
+
+    const imgs: ImageDefinition[] = [];
+    for (const image of newTopicImages) {
+      const uploaded = await createImage(image, {
+        owner: topicGroup,
+      });
+      imgs.push(uploaded);
+    }
 
     forum.topics.push(
       Topic.create(
@@ -68,6 +84,7 @@ export default function Home() {
           postCount: 1,
           comments: ListOfComments.create([], { owner: forum._owner }),
           createdAt: Date.now(),
+          images: ListOfImages.create(imgs, { owner: topicGroup }),
         },
         { owner: topicGroup }
       )
@@ -104,26 +121,56 @@ export default function Home() {
               </DialogHeader>
               <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="topic-title" className="text-right">
-                    Title
-                  </Label>
                   <Input
                     id="topic-title"
+                    placeholder="Topic"
                     value={newTopicTitle}
                     onChange={(e) => setNewTopicTitle(e.target.value)}
-                    className="col-span-3"
+                    className="col-span-4"
                   />
                 </div>
                 <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="topic-body" className="text-right">
-                    Body
-                  </Label>
                   <Textarea
                     id="topic-body"
                     value={newTopicBody}
                     onChange={(e) => setNewTopicBody(e.target.value)}
-                    className="col-span-3"
+                    className="col-span-4"
                     rows={5}
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center gap-2">
+                    {newTopicImages.map((image) => (
+                      <div className="relative" key={image.name}>
+                        <img
+                          key={image.name}
+                          src={URL.createObjectURL(image)}
+                          alt={image.name}
+                          className="w-12"
+                        />
+                        <Button
+                          className="absolute -top-2 -right-2 bg-red-500 w-6 p-2 text-block text-white rounded-full w-2 h-2 text-xs flex items-center justify-center"
+                          onClick={() => {
+                            setNewTopicImages(
+                              newTopicImages.filter((i) => i !== image)
+                            );
+                          }}
+                        >
+                          x
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                  <Input
+                    type="file"
+                    onChange={(img) => {
+                      if (img.target.files) {
+                        setNewTopicImages([
+                          ...newTopicImages,
+                          ...Array.from(img.target.files),
+                        ]);
+                      }
+                    }}
                   />
                 </div>
               </div>

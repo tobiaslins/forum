@@ -17,7 +17,7 @@ export function Avatar({ src, alt, size = "md", status }: AvatarProps) {
       `}
       >
         <Image
-          src={src || "/placeholder.svg"}
+          src={`https://avatar.vercel.sh/${alt}`}
           alt={alt}
           fill
           className="object-cover"
