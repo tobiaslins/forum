@@ -108,7 +108,7 @@ export function ReactionsBar({
             <TooltipTrigger asChild>
               <button
                 onClick={() => setShowPicker(!showPicker)}
-                className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-muted hover:bg-muted/80 text-muted-foreground transition-colors"
+                className="inline-flex items-center justify-center w-8 h-8 rounded-full border hover:bg-muted/80 text-muted-foreground transition-colors"
               >
                 +
               </button>
