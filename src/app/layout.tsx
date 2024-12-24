@@ -29,7 +29,9 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-background text-foreground min-h-screen`}
       >
-        <div className="container mx-auto p-4">
+        <div className="container mx-auto">
+          <JazzAndAuth>{children}</JazzAndAuth>
+
           <div className="flex justify-end mb-4">
             <Button
               variant="outline"
@@ -43,7 +45,6 @@ export default function RootLayout({
               )}
             </Button>
           </div>
-          <JazzAndAuth>{children}</JazzAndAuth>
         </div>
       </body>
     </html>

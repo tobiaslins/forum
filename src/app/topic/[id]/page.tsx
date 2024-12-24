@@ -83,7 +83,7 @@ export default function TopicPage({
       if (!node.comment || !node.comment.id) return null;
 
       return (
-        <div key={node.comment.id} className="divide-y">
+        <div key={node.comment.id} className="">
           <CommentComponent comment={node.comment} topic={topic} />
           {node.children.length > 0 && (
             <div className="ml-8 relative">
@@ -97,32 +97,28 @@ export default function TopicPage({
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="max-w-xl mx-auto space-y-2">
       {forum && <CursorSync forum={forum} />}
       <div className="flex items-center justify-between">
         <Link
           href={topic?.forum?.id ? `/?forum=${topic?.forum?.id}` : "/"}
-          className="text-primary hover:text-primary/90"
+          className="text-gray-500 text-sm hover:text-primary/90"
         >
-          ← Back
+          Back
         </Link>
-        <div className="flex gap-2">
-          <Button variant="outline">Latest</Button>
-          <Button variant="outline">Popular</Button>
-        </div>
       </div>
 
-      <div className="bg-card rounded-lg">
-        <div className="p-4 border-b border-border">
+      <div className="rounded-lg bg-secondary p-4">
+        <div className="flex items-center justify-between">
           <h1 className="text-xl font-semibold text-card-foreground">
             {topic ? topic.title : <Skeleton className="w-24 h-7" />}
           </h1>
-          <div className="mt-2 text-sm text-muted-foreground">
+          <div className="text-xs text-muted-foreground">
             Posted {formatDistanceToNow(topic?.createdAt ?? new Date())} ago
           </div>
         </div>
 
-        <div className="p-4 border-b border-border">
+        <div className="py-4">
           <ReactMarkdown className="prose dark:prose-invert max-w-none">
             {topic?.body}
           </ReactMarkdown>
@@ -139,7 +135,7 @@ export default function TopicPage({
 
         {topic && <NewPostForm topic={topic} />}
 
-        <div className="divide-y divide-border">
+        <div className="">
           {topic?.comments && renderComments(organizeComments(topic.comments))}
         </div>
       </div>
@@ -197,9 +193,10 @@ function CommentComponent({
   };
 
   return (
-    <div className={"p-4"}>
+    <div className={"p-2"}>
       <div className="flex gap-4">
         <Avatar
+          size="sm"
           src="/placeholder.svg"
           alt={comment._edits?.content?.by?.profile?.name ?? ""}
           status="online"
