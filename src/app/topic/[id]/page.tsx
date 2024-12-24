@@ -252,7 +252,7 @@ function CommentComponent({
 
           <div className="flex items-center gap-4">
             {comment.reactions && (
-              <ReactionOverview petReactions={comment.reactions} />
+              <ReactionOverview reactions={comment.reactions} />
             )}
             <Button
               variant="ghost"

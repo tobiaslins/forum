@@ -9,20 +9,15 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-export function ReactionOverview({
-  petReactions,
-}: {
-  petReactions: Reactions;
-}) {
-  const all = Object.values(petReactions).filter(
-    (entry) => entry.value !== null
-  );
-
+export function ReactionOverview({ reactions }: { reactions: Reactions }) {
+  const all = Object.values(reactions).filter((entry) => entry.value !== null);
+  //   reactions.
   const reactionsByType = all.reduce((acc, entry) => {
     acc[entry.value] = (acc[entry.value] || 0) + 1;
     return acc;
   }, {});
-  const ownReaction = petReactions.byMe?.value;
+
+  const ownReaction = reactions.byMe?.value;
 
   return (
     <div>
@@ -30,9 +25,9 @@ export function ReactionOverview({
         <ReactionsBar
           onReact={(key) => {
             if (ownReaction === key) {
-              petReactions.push(null);
+              reactions.push(null);
             } else {
-              petReactions.push(key as any);
+              reactions.push(key as any);
             }
           }}
           reactions={reactionsByType}
@@ -106,7 +101,7 @@ export function ReactionsBar({
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
-            )
+            ),
         )}
         <TooltipProvider>
           <Tooltip open={showPicker}>
