@@ -38,10 +38,6 @@ export default function TopicPage({
   const topic = useCoState(Topic, id as any, { comments: [{}] });
   const forum = useCoState(Forum, topic?.forum?.id as any);
 
-  if (!topic) {
-    return <div>Loading...</div>;
-  }
-
   const organizeComments = (comments: Comment[]): CommentNode[] => {
     const commentMap = new Map<string, CommentNode>();
     const roots: CommentNode[] = [];
@@ -84,7 +80,7 @@ export default function TopicPage({
 
       return (
         <div key={node.comment.id} className="">
-          <CommentComponent comment={node.comment} topic={topic} />
+          <CommentComponent comment={node.comment} topic={topic!} />
           {node.children.length > 0 && (
             <div className="ml-8 relative">
               <div className="absolute left-0 top-4 bottom-4 border-l -translate-x-[2px]" />
@@ -99,17 +95,15 @@ export default function TopicPage({
   return (
     <div className="max-w-xl mx-auto space-y-2">
       {forum && <CursorSync forum={forum} />}
-      <div className="flex items-center justify-between">
+
+      <div className="rounded-xl bg-secondary p-6 relative">
         <Link
           href={topic?.forum?.id ? `/?forum=${topic?.forum?.id}` : "/"}
-          className="text-gray-500 text-sm hover:text-primary/90"
+          className="text-primary/80 text-sm hover:text-primary/90 fixed left-4 top-4"
         >
           Back
         </Link>
-      </div>
-
-      <div className="rounded-lg bg-secondary p-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-start justify-between -mt-1">
           <h1 className="text-xl font-semibold text-card-foreground">
             {topic ? topic.title : <Skeleton className="w-24 h-7" />}
           </h1>
@@ -201,7 +195,7 @@ function CommentComponent({
           alt={comment._edits?.content?.by?.profile?.name ?? ""}
           status="online"
         />
-        <div className="flex-1 space-y-3">
+        <div className="flex-1 space-y-3 group">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <h3 className="font-medium text-card-foreground">
@@ -209,7 +203,7 @@ function CommentComponent({
                   <Skeleton className="w-24 h-7" />
                 )}
               </h3>
-              <span className="text-muted-foreground">
+              <span className="text-muted-foreground text-xs">
                 • {formatDistanceToNow(comment.createdAt)} ago
               </span>
             </div>
@@ -230,8 +224,8 @@ function CommentComponent({
 
           <p className="text-card-foreground">{comment.content}</p>
 
-          <div className="flex items-center gap-4">
-            {comment.images && (
+          {comment.images && comment.images?.length > 0 && (
+            <div className="flex items-center gap-4">
               <div className="flex flex-wrap gap-2">
                 {comment.images.map((image, idx) => (
                   <ProgressiveImg key={idx} image={image}>
@@ -244,21 +238,21 @@ function CommentComponent({
                   </ProgressiveImg>
                 ))}
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center justify-between gap-4">
             {comment.reactions && (
               <ReactionOverview reactions={comment.reactions} />
             )}
             <Button
-              variant="ghost"
+              variant="primary"
               size="sm"
-              className="flex items-center gap-1"
-              onClick={() => setIsReplyOpen(true)}
+              className="flex group-hover:opacity-100 opacity-0 duration-200 transition-opacity py-0 h-8 gap-1"
+              onClick={() => setIsReplyOpen((s) => !s)}
             >
               <MessageCircle className="h-4 w-4" />
-              Reply
+              <span className="text-xs">Reply</span>
             </Button>
           </div>
 

@@ -67,7 +67,7 @@ export function NewPostForm({ topic }: { topic: Topic }) {
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Write a comment..."
-        className="w-full min-h-[60px] mb-3"
+        className="w-full min-h-[60px] mb-3 bg-primary/5 text-primary placeholder:text-primary/50"
         onDrop={handleDrop}
       />
       <div className="flex flex-wrap gap-2">
@@ -82,13 +82,8 @@ export function NewPostForm({ topic }: { topic: Topic }) {
         ))}
       </div>
       <div className="flex justify-end">
-        <Button
-          size={"sm"}
-          className="text-xs"
-          type="submit"
-          variant={"outline"}
-        >
-          Post Comment
+        <Button size={"sm"} type="submit" variant={"primary"}>
+          Post
         </Button>
       </div>
     </form>

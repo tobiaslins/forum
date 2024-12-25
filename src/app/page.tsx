@@ -120,13 +120,19 @@ export default function Home() {
     );
   }
 
+  const alreadyJoined = me?.root?.forums?.some((s) => s?.id === forum.id);
+
+  const uniqueForums = me?.root?.forums?.filter(
+    (f, i, self) => i === self.findIndex((t) => t?.id === f?.id),
+  );
+
   return (
     <div className="flex gap-4">
       <CursorSync forum={forum} />
       <div className="w-64 bg-card rounded-lg shadow-sm p-4 h-fit">
         <h2 className="text-lg font-semibold mb-4">Forums</h2>
         <div className="space-y-2">
-          {me?.root?.forums?.map((f) => (
+          {uniqueForums?.map((f) => (
             <button
               key={f?.id}
               onClick={() => {
@@ -141,21 +147,24 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex-1 max-w-3xl">
+      <div className="flex-1 max-w-xl">
         <div className="bg-card rounded-lg shadow-sm overflow-hidden">
           <div className="p-4 flex items-center justify-between">
             <h1 className="text-xl font-semibold text-card-foreground">
               {forum.name}
             </h1>
             <div className="flex items-center gap-2">
-              <Button
-                onClick={() => {
-                  me?.root?.forums?.push(forum);
-                }}
-                variant="default"
-              >
-                Join Community
-              </Button>
+              {!alreadyJoined && (
+                <Button
+                  onClick={() => {
+                    if (alreadyJoined) return;
+                    me?.root?.forums?.push(forum);
+                  }}
+                  variant="default"
+                >
+                  Join Community
+                </Button>
+              )}
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
                   <Button variant="default">New Topic</Button>

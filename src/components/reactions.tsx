@@ -8,6 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Button } from "./ui/button";
 
 export function ReactionOverview({ reactions }: { reactions: Reactions }) {
   const all = Object.values(reactions).filter((entry) => entry.value !== null);
@@ -20,20 +21,18 @@ export function ReactionOverview({ reactions }: { reactions: Reactions }) {
   const ownReaction = reactions.byMe?.value;
 
   return (
-    <div>
-      <div className="flex flex-col gap-1">
-        <ReactionsBar
-          onReact={(key) => {
-            if (ownReaction === key) {
-              reactions.push(null);
-            } else {
-              reactions.push(key as any);
-            }
-          }}
-          reactions={reactionsByType}
-          userReactions={[ownReaction!]}
-        />
-      </div>
+    <div className="flex flex-col gap-1">
+      <ReactionsBar
+        onReact={(key) => {
+          if (ownReaction === key) {
+            reactions.push(null);
+          } else {
+            reactions.push(key as any);
+          }
+        }}
+        reactions={reactionsByType}
+        userReactions={[ownReaction!]}
+      />
     </div>
   );
 }
@@ -106,12 +105,13 @@ export function ReactionsBar({
         <TooltipProvider>
           <Tooltip open={showPicker}>
             <TooltipTrigger asChild>
-              <button
+              <Button
+                variant="ghost"
                 onClick={() => setShowPicker(!showPicker)}
-                className="inline-flex items-center justify-center w-8 h-8 rounded-full border hover:bg-muted/80 text-muted-foreground transition-colors"
+                className="inline-flex items-center text-lg justify-center w-8 h-8 rounded-full bg-primary/5 hover:bg-primary/10 text-muted-foreground transition-colors"
               >
                 +
-              </button>
+              </Button>
             </TooltipTrigger>
             <TooltipContent
               className="bg-popover/95 backdrop-blur-sm rounded-lg p-2 flex gap-1 shadow-lg border border-border"
