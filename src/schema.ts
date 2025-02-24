@@ -1,5 +1,3 @@
-"use client";
-
 import {
   CoMap,
   CoList,
@@ -8,7 +6,6 @@ import {
   Account,
   CoFeed,
   ImageDefinition,
-  CoStream,
 } from "jazz-tools";
 
 export const ReactionTypes = ["love", "haha", null] as const;
@@ -49,7 +46,7 @@ export class CursorLocation extends CoFeed.Of(
     y: number;
     innerHeight: number;
     innerWidth: number;
-  }>()
+  }>(),
 ) {}
 
 export class ListOfTopics extends CoList.Of(co.ref(Topic)) {}
@@ -80,11 +77,13 @@ export class JazzAccount extends Account {
     super.migrate(creationProps);
 
     if (!this._refs.root) {
-      this.root = JazzRoot.create(
-        { forums: ListOfForums.create([], { owner: this }) },
-        { owner: this }
-      );
-      console.log("created root", this.root);
+      this.root = JazzRoot.create({ forums: ListOfForums.create([]) });
     }
+  }
+}
+
+declare module "jazz-react" {
+  interface Register {
+    Account: JazzAccount;
   }
 }

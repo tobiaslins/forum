@@ -18,12 +18,13 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
-    "jazz-browser": "^0.8.44",
-    "jazz-browser-media-images": "^0.8.44",
-    "jazz-react": "^0.8.44",
-    "jazz-tools": "^0.8.44",
+    "jazz-browser": "^0.10.9",
+    "jazz-browser-media-images": "^0.10.9",
+    "jazz-nodejs": "^0.10.8",
+    "jazz-react": "^0.10.9",
+    "jazz-tools": "^0.10.8",
     "lucide-react": "^0.469.0",
-    "next": "15.1.2",
+    "next": "15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-markdown": "^9.0.1",
@@ -38,5 +39,6 @@
     "prettier": "^3.4.2",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
-  }
+  },
+  "packageManager": "pnpm@10.2.1+sha512.398035c7bd696d0ba0b10a688ed558285329d27ea994804a52bad9167d8e3a72bcb993f9699585d3ca25779ac64949ef422757a6c31102c12ab932e5cbe5cc92"
 }

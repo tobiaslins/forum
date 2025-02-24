@@ -2,11 +2,11 @@
 
 import { useRef, useState } from "react";
 import { Topic, Comment, Reactions, ListOfImages } from "@/schema";
-import { useAccount } from "@/app/jazz";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Group, ImageDefinition } from "jazz-tools";
 import { createImage } from "jazz-browser-media-images";
+import { useAccount } from "jazz-react";
 
 export function NewPostForm({ topic }: { topic: Topic }) {
   const [content, setContent] = useState("");
@@ -62,27 +62,50 @@ export function NewPostForm({ topic }: { topic: Topic }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="py-4 ">
+    <form onSubmit={handleSubmit} className="py-3">
       <Textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Write a comment..."
-        className="w-full min-h-[60px] mb-3 bg-primary/5 text-primary placeholder:text-primary/50"
+        className="w-full min-h-[80px] mb-2 bg-primary/5 text-primary placeholder:text-primary/50 text-sm"
         onDrop={handleDrop}
       />
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2 mb-2">
         {attachedImages.map((image) => (
-          <div key={image.name}>
+          <div key={image.name} className="relative">
             <img
-              className="w-12"
+              className="w-16 rounded border"
               src={URL.createObjectURL(image)}
               alt={image.name}
             />
+            <Button
+              className="absolute -top-2 -right-2 bg-red-500 w-4 p-0 text-white rounded-full h-4 text-xs flex items-center justify-center"
+              onClick={() => {
+                setAttachedImages(
+                  attachedImages.filter((i) => i !== image)
+                );
+              }}
+            >
+              x
+            </Button>
           </div>
         ))}
       </div>
-      <div className="flex justify-end">
-        <Button size={"sm"} type="submit" variant={"primary"}>
+      <div className="flex justify-between items-center">
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            if (e.target.files) {
+              setAttachedImages([
+                ...attachedImages,
+                ...Array.from(e.target.files),
+              ]);
+            }
+          }}
+          className="text-xs text-gray-500 file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary"
+        />
+        <Button size="sm" type="submit" variant="primary" className="h-7 text-xs">
           Post
         </Button>
       </div>

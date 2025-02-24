@@ -29,22 +29,22 @@ export default function RootLayout({
       <body
         className={`${inter.className} bg-background text-foreground min-h-screen`}
       >
-        <div className="container mx-auto">
-          <JazzAndAuth>{children}</JazzAndAuth>
-
-          <div className="flex justify-end mb-4">
+        <div className="container mx-auto py-4">
+          <div className="relative z-10">
             <Button
               variant="outline"
               size="icon"
               onClick={() => setDarkMode(!darkMode)}
+              className="absolute right-0 top-0"
             >
               {darkMode ? (
-                <Sun className="h-[1.2rem] w-[1.2rem]" />
+                <Sun className="h-[1rem] w-[1rem]" />
               ) : (
-                <Moon className="h-[1.2rem] w-[1.2rem]" />
+                <Moon className="h-[1rem] w-[1rem]" />
               )}
             </Button>
           </div>
+          <JazzAndAuth>{children}</JazzAndAuth>
         </div>
       </body>
     </html>

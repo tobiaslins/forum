@@ -73,7 +73,7 @@ export function ReactionsBar({
                     <button
                       onClick={() => onReact(emoji)}
                       className={`
-                  inline-flex items-center gap-1 px-2 py-1 rounded-full text-sm transition-colors
+                  inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-xs transition-colors
                   ${
                     userReactions.includes(emoji)
                       ? "bg-primary/20 text-primary hover:bg-primary/30"
@@ -108,7 +108,7 @@ export function ReactionsBar({
               <Button
                 variant="ghost"
                 onClick={() => setShowPicker(!showPicker)}
-                className="inline-flex items-center text-lg justify-center w-8 h-8 rounded-full bg-primary/5 hover:bg-primary/10 text-muted-foreground transition-colors"
+                className="inline-flex items-center text-sm justify-center w-6 h-6 rounded-full bg-primary/5 hover:bg-primary/10 text-muted-foreground transition-colors p-0"
               >
                 +
               </Button>

@@ -9,7 +9,6 @@ import {
   ListOfImages,
   CursorLocation,
 } from "../schema";
-import { useAccount, useCoState } from "./jazz";
 import { Group, ID, ImageDefinition } from "jazz-tools";
 import { MessageCircle } from "lucide-react";
 import Link from "next/link";
@@ -26,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { createImage } from "jazz-browser-media-images";
 import { CursorSync } from "@/components/cursor-sync";
+import { useCoState, useAccount } from "jazz-react";
 
 export default function Home() {
   const { me: meState } = useAccount({ root: { forums: [] } });
@@ -86,7 +86,7 @@ export default function Home() {
     const imgs: ImageDefinition[] = [];
     for (const image of newTopicImages) {
       const uploaded = await createImage(image, {
-        owner: topicGroup,
+        owner: topicGroup.castAs(Group)!,
       });
       imgs.push(uploaded);
     }
@@ -129,9 +129,9 @@ export default function Home() {
   return (
     <div className="flex gap-4">
       <CursorSync forum={forum} />
-      <div className="w-64 bg-card rounded-lg shadow-sm p-4 h-fit">
-        <h2 className="text-lg font-semibold mb-4">Forums</h2>
-        <div className="space-y-2">
+      <div className="w-56 bg-secondary rounded-xl shadow-sm p-4 h-fit">
+        <h2 className="text-base font-semibold mb-2">Forums</h2>
+        <div className="space-y-1">
           {uniqueForums?.map((f) => (
             <button
               key={f?.id}
@@ -139,7 +139,7 @@ export default function Home() {
                 window.history.pushState(null, "", `/?forum=${f?.id}`);
                 setForumID(f?.id!);
               }}
-              className="block p-2 hover:bg-muted/50 rounded-md text-card-foreground"
+              className="block w-full text-left px-2 py-1.5 hover:bg-muted/50 rounded-md text-card-foreground text-sm"
             >
               {f?.name}
             </button>
@@ -148,9 +148,9 @@ export default function Home() {
       </div>
 
       <div className="flex-1 max-w-xl">
-        <div className="bg-card rounded-lg shadow-sm overflow-hidden">
-          <div className="p-4 flex items-center justify-between">
-            <h1 className="text-xl font-semibold text-card-foreground">
+        <div className="bg-secondary rounded-xl shadow-sm overflow-hidden">
+          <div className="px-4 py-3 flex items-center justify-between">
+            <h1 className="text-lg font-semibold text-card-foreground">
               {forum.name}
             </h1>
             <div className="flex items-center gap-2">
@@ -160,14 +160,15 @@ export default function Home() {
                     if (alreadyJoined) return;
                     me?.root?.forums?.push(forum);
                   }}
-                  variant="default"
+                  variant="primary"
+                  size="sm"
                 >
-                  Join Community
+                  Join
                 </Button>
               )}
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button variant="default">New Topic</Button>
+                  <Button variant="primary" size="sm">New Topic</Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                   <DialogHeader>
@@ -188,7 +189,7 @@ export default function Home() {
                         id="topic-body"
                         value={newTopicBody}
                         onChange={(e) => setNewTopicBody(e.target.value)}
-                        className="col-span-4"
+                        className="col-span-4 bg-primary/5 text-primary placeholder:text-primary/50"
                         rows={5}
                       />
                     </div>
@@ -200,10 +201,10 @@ export default function Home() {
                               key={image.name}
                               src={URL.createObjectURL(image)}
                               alt={image.name}
-                              className="w-12"
+                              className="w-24 rounded border"
                             />
                             <Button
-                              className="absolute -top-2 -right-2 bg-red-500 w-6 p-2 text-block text-white rounded-full w-2 h-2 text-xs flex items-center justify-center"
+                              className="absolute -top-2 -right-2 bg-red-500 w-6 p-2 text-white rounded-full w-2 h-2 text-xs flex items-center justify-center"
                               onClick={() => {
                                 setNewTopicImages(
                                   newTopicImages.filter((i) => i !== image),
@@ -228,22 +229,22 @@ export default function Home() {
                       />
                     </div>
                   </div>
-                  <Button onClick={createTopic}>Create Topic</Button>
+                  <Button variant="primary" onClick={createTopic}>Create Topic</Button>
                 </DialogContent>
               </Dialog>
             </div>
           </div>
-          <div className="divide-y divide-border border rounded-lg">
+          <div className="divide-y divide-border">
             {forum.topics.map((topic) => (
               <Link
                 key={topic.id}
                 href={`/topic/${topic.id}`}
-                className="flex items-center justify-between p-4 hover:bg-muted/50 text-card-foreground"
+                className="flex items-center justify-between py-3 px-4 hover:bg-muted/50 text-card-foreground"
               >
-                <h2 className="text-primary font-medium">{topic.title}</h2>
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <MessageCircle className="h-4 w-4" />
-                  <span className="text-sm">{topic.comments?.length}</span>
+                <h2 className="text-base font-medium">{topic.title}</h2>
+                <div className="flex items-center gap-1 text-muted-foreground">
+                  <MessageCircle className="h-3.5 w-3.5" />
+                  <span className="text-xs">{topic.comments?.length}</span>
                 </div>
               </Link>
             ))}

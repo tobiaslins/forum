@@ -33,23 +33,26 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       jazz-browser:
-        specifier: ^0.8.44
-        version: 0.8.44
+        specifier: ^0.10.9
+        version: 0.10.9
       jazz-browser-media-images:
-        specifier: ^0.8.44
-        version: 0.8.44
+        specifier: ^0.10.9
+        version: 0.10.9
+      jazz-nodejs:
+        specifier: ^0.10.8
+        version: 0.10.8
       jazz-react:
-        specifier: ^0.8.44
-        version: 0.8.44(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^0.10.9
+        version: 0.10.9(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       jazz-tools:
-        specifier: ^0.8.44
-        version: 0.8.44
+        specifier: ^0.10.8
+        version: 0.10.8
       lucide-react:
         specifier: ^0.469.0
         version: 0.469.0(react@19.0.0)
       next:
-        specifier: 15.1.2
-        version: 15.1.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: 15.1.7
+        version: 15.1.7(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -111,18 +114,6 @@ packages:
 
   '@floating-ui/utils@0.2.8':
     resolution: {integrity: sha512-kym7SodPp8/wloecOpcmSnWJsK7M0E5Wg8UcFA+uO4B9s5d0ywXOEro/8HM9x0rW+TljRzul/14UYz3TleT3ig==}
-
-  '@hazae41/berith@1.2.6':
-    resolution: {integrity: sha512-TQLkisoolGD2kdSQVtTVXNwmsotA9dLmUgXcpHTNzssmN11Mp+vHVf4Myn3+Q4U18Na3UzGi6DZqogZFqjPPvg==}
-
-  '@hazae41/box@1.0.14':
-    resolution: {integrity: sha512-RevIMZBVRmp0BDkpBpL77sr3Rk7XdqzBZcw+UsfUT4JAly/sryM/NDzJa80sMyO6aERJkjHUQaxH5DYDznPhkw==}
-
-  '@hazae41/option@1.1.4':
-    resolution: {integrity: sha512-ZGAVkOJJw2YIeihG8PaWs4R3KDloCgWGNDPqbATvT3kTtoyU+dJmya/UCM2P+ZwCfWYpE7nGiYJbBTlpp929Qg==}
-
-  '@hazae41/result@1.3.2':
-    resolution: {integrity: sha512-X2RdjCC4DypMZFN3aZ7P5Zh8kEMN6SEqcMARRa/CraEU7Es/hj0yBh1Pt5eAYrRkpnWiE9+ohKSU4s7nL5L1gg==}
 
   '@img/sharp-darwin-arm64@0.33.5':
     resolution: {integrity: sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ==}
@@ -251,53 +242,53 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@next/env@15.1.2':
-    resolution: {integrity: sha512-Hm3jIGsoUl6RLB1vzY+dZeqb+/kWPZ+h34yiWxW0dV87l8Im/eMOwpOA+a0L78U0HM04syEjXuRlCozqpwuojQ==}
+  '@next/env@15.1.7':
+    resolution: {integrity: sha512-d9jnRrkuOH7Mhi+LHav2XW91HOgTAWHxjMPkXMGBc9B2b7614P7kjt8tAplRvJpbSt4nbO1lugcT/kAaWzjlLQ==}
 
-  '@next/swc-darwin-arm64@15.1.2':
-    resolution: {integrity: sha512-b9TN7q+j5/7+rGLhFAVZiKJGIASuo8tWvInGfAd8wsULjB1uNGRCj1z1WZwwPWzVQbIKWFYqc+9L7W09qwt52w==}
+  '@next/swc-darwin-arm64@15.1.7':
+    resolution: {integrity: sha512-hPFwzPJDpA8FGj7IKV3Yf1web3oz2YsR8du4amKw8d+jAOHfYHYFpMkoF6vgSY4W6vB29RtZEklK9ayinGiCmQ==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [darwin]
 
-  '@next/swc-darwin-x64@15.1.2':
-    resolution: {integrity: sha512-caR62jNDUCU+qobStO6YJ05p9E+LR0EoXh1EEmyU69cYydsAy7drMcOlUlRtQihM6K6QfvNwJuLhsHcCzNpqtA==}
+  '@next/swc-darwin-x64@15.1.7':
+    resolution: {integrity: sha512-2qoas+fO3OQKkU0PBUfwTiw/EYpN+kdAx62cePRyY1LqKtP09Vp5UcUntfZYajop5fDFTjSxCHfZVRxzi+9FYQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [darwin]
 
-  '@next/swc-linux-arm64-gnu@15.1.2':
-    resolution: {integrity: sha512-fHHXBusURjBmN6VBUtu6/5s7cCeEkuGAb/ZZiGHBLVBXMBy4D5QpM8P33Or8JD1nlOjm/ZT9sEE5HouQ0F+hUA==}
+  '@next/swc-linux-arm64-gnu@15.1.7':
+    resolution: {integrity: sha512-sKLLwDX709mPdzxMnRIXLIT9zaX2w0GUlkLYQnKGoXeWUhcvpCrK+yevcwCJPdTdxZEUA0mOXGLdPsGkudGdnA==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@next/swc-linux-arm64-musl@15.1.2':
-    resolution: {integrity: sha512-9CF1Pnivij7+M3G74lxr+e9h6o2YNIe7QtExWq1KUK4hsOLTBv6FJikEwCaC3NeYTflzrm69E5UfwEAbV2U9/g==}
+  '@next/swc-linux-arm64-musl@15.1.7':
+    resolution: {integrity: sha512-zblK1OQbQWdC8fxdX4fpsHDw+VSpBPGEUX4PhSE9hkaWPrWoeIJn+baX53vbsbDRaDKd7bBNcXRovY1hEhFd7w==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
-  '@next/swc-linux-x64-gnu@15.1.2':
-    resolution: {integrity: sha512-tINV7WmcTUf4oM/eN3Yuu/f8jQ5C6AkueZPKeALs/qfdfX57eNv4Ij7rt0SA6iZ8+fMobVfcFVv664Op0caCCg==}
+  '@next/swc-linux-x64-gnu@15.1.7':
+    resolution: {integrity: sha512-GOzXutxuLvLHFDAPsMP2zDBMl1vfUHHpdNpFGhxu90jEzH6nNIgmtw/s1MDwpTOiM+MT5V8+I1hmVFeAUhkbgQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@next/swc-linux-x64-musl@15.1.2':
-    resolution: {integrity: sha512-jf2IseC4WRsGkzeUw/cK3wci9pxR53GlLAt30+y+B+2qAQxMw6WAC3QrANIKxkcoPU3JFh/10uFfmoMDF9JXKg==}
+  '@next/swc-linux-x64-musl@15.1.7':
+    resolution: {integrity: sha512-WrZ7jBhR7ATW1z5iEQ0ZJfE2twCNSXbpCSaAunF3BKcVeHFADSI/AW1y5Xt3DzTqPF1FzQlwQTewqetAABhZRQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
-  '@next/swc-win32-arm64-msvc@15.1.2':
-    resolution: {integrity: sha512-wvg7MlfnaociP7k8lxLX4s2iBJm4BrNiNFhVUY+Yur5yhAJHfkS8qPPeDEUH8rQiY0PX3u/P7Q/wcg6Mv6GSAA==}
+  '@next/swc-win32-arm64-msvc@15.1.7':
+    resolution: {integrity: sha512-LDnj1f3OVbou1BqvvXVqouJZKcwq++mV2F+oFHptToZtScIEnhNRJAhJzqAtTE2dB31qDYL45xJwrc+bLeKM2Q==}
     engines: {node: '>= 10'}
     cpu: [arm64]
     os: [win32]
 
-  '@next/swc-win32-x64-msvc@15.1.2':
-    resolution: {integrity: sha512-D3cNA8NoT3aWISWmo7HF5Eyko/0OdOO+VagkoJuiTk7pyX3P/b+n8XA/MYvyR+xSVcbKn68B1rY9fgqjNISqzQ==}
+  '@next/swc-win32-x64-msvc@15.1.7':
+    resolution: {integrity: sha512-dC01f1quuf97viOfW05/K8XYv2iuBgAxJZl7mbCKEjMgdQl5JjAKJ0D2qMKZCgPWDeFbFT0Q0nYWwytEW0DWTQ==}
     engines: {node: '>= 10'}
     cpu: [x64]
     os: [win32]
@@ -789,17 +780,17 @@ packages:
     resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
     engines: {node: '>=6'}
 
-  cojson-storage-indexeddb@0.8.44:
-    resolution: {integrity: sha512-Td4ORaj+fedHu6anrcsN/nBnNsGcREpp8okyo65o+vmatZ+IofpPBRKH3Elt/9+x3Un8popSPJF6kXwfV5BGHw==}
+  cojson-storage-indexeddb@0.10.8:
+    resolution: {integrity: sha512-gOzrUoErAALQ7uDcBmRyIxeX6ZPEP44xlsfIqYty2KEO1O4hb12CQG+2CvSqDA/MX/3yETpy07ZRXDPay+9sNA==}
 
-  cojson-storage@0.8.44:
-    resolution: {integrity: sha512-Prl1c84P6co1cQfldxycqkafguaR8Rs7CCfhzg6ffVOmNy/A/oydO/xTKIGchFzSZxL+MT2/x6FHwn+/KNbXxg==}
+  cojson-storage@0.10.8:
+    resolution: {integrity: sha512-y/JhP7x0G6PS3M9mi1CpLFsLE8eotpQ61dFB2zQulLPuhOqEg5SV/JgYv49rzgIzQBBVTdt4Tv7+hoNsoHVk5Q==}
 
-  cojson-transport-ws@0.8.44:
-    resolution: {integrity: sha512-5a0fqDv+0tvD/Y+QqLEmSq47elMf/YvTA2sQD3a0wuzmU7eZzrhg3eIABGsgPwonPPOxTukkL46kbz7uiOtlfg==}
+  cojson-transport-ws@0.10.8:
+    resolution: {integrity: sha512-YDfYv3VvhZGOR9fB+kBJ4b3Mq0rnS2YUilFaY673iL29CxUlLoB1cJ9Ch59RDICAXvYm0weXhC4JT7NsAhAvNw==}
 
-  cojson@0.8.44:
-    resolution: {integrity: sha512-gYGl5q4Vpoeg1pyCPIWys/W7S0X+x+D1MJQxFAcujveLsfWPOyW76ZT5OqP2ao0wiAq0J8MtuOsepEhDP7ZWYw==}
+  cojson@0.10.8:
+    resolution: {integrity: sha512-HUszXPjTcfUch+/ZJ+oFDUH2BGzj+KDiYVEeI/vYKvYBIa/vsyvYoF9ThSGm19vX6dh9zCHyFVd+cx0ps6oEKQ==}
 
   color-convert@2.0.1:
     resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
@@ -884,10 +875,6 @@ packages:
   extend@3.0.2:
     resolution: {integrity: sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g==}
 
-  fast-check@3.23.2:
-    resolution: {integrity: sha512-h5+1OzzfCC3Ef7VbtKdcv7zsstUQwUDlYpUTvjeUsJAssPgLn7QzbboPtL5ro04Mq0rPOsMzl7q5hIbRs2wD1A==}
-    engines: {node: '>=8.0.0'}
-
   fast-glob@3.3.2:
     resolution: {integrity: sha512-oX2ruAFQwf/Orj8m737Y5adxDQO0LAB7/S5MnxCdTNDd4p6BsyIVsv9JQsATbTSq8KHRpLwIHbVlUNatxd+1Ow==}
     engines: {node: '>=8.6.0'}
@@ -932,9 +919,6 @@ packages:
 
   glur@1.1.2:
     resolution: {integrity: sha512-l+8esYHTKOx2G/Aao4lEQ0bnHWg4fWtJbVoZZT9Knxi01pB8C80BR85nONLFwkkQoFRCmXY+BUcGZN3yZ2QsRA==}
-
-  hash-wasm@4.12.0:
-    resolution: {integrity: sha512-+/2B2rYLb48I/evdOIhP+K/DD2ca2fgBjp6O+GBEnCDk2e4rpeXIK8GvIyRPjTezgmWn9gmKwkQjjx6BtqDHVQ==}
 
   hasown@2.0.2:
     resolution: {integrity: sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ==}
@@ -1004,20 +988,32 @@ packages:
   jackspeak@3.4.3:
     resolution: {integrity: sha512-OGlZQpz2yfahA/Rd1Y8Cd9SIEsqvXkLVoSw/cgwhnhFMDbsQFeZYoJJ7bIZBS9BcamUW96asq/npPWugM+RQBw==}
 
-  jazz-browser-media-images@0.8.44:
-    resolution: {integrity: sha512-CKnFJJgPkaoj3hsViH3Dimh/oJLuU4ei1U3hmvHotye9M0seqoGLoEk//i0m5bhtE5YBxr08Xc0vpLlFIQ35kQ==}
+  jazz-browser-media-images@0.10.9:
+    resolution: {integrity: sha512-AajyKOpLsnCWLwmdMOP3J9PQWFNwKBumt/ZXSBkB7YO1fvgV25JZ61lBT4oSwn+1m0vJWMG+v0YxkbgPwbkBIA==}
 
-  jazz-browser@0.8.44:
-    resolution: {integrity: sha512-hzRMwmQKsN1OLCZ5O84sr6dAiHle88wmYvJgqcBjGotbiyhD6hAwZSdPqHqIh20zklDPx6Ptg4GbO7WhJDGaCw==}
+  jazz-browser@0.10.9:
+    resolution: {integrity: sha512-llThdJoREekFqrETNLXDyK+/QL8EERulWHyyM6H5FqEqmk01dJxI/ebdPlm+ikT2llOEkh63zu6euliFqcPfXQ==}
 
-  jazz-react@0.8.44:
-    resolution: {integrity: sha512-URspwsMh2/SvkjbIrphePF0mFJmf6pHv8TMykH/9AVRvR40bX/02aMN0nWJwcihkf6vsmOmZmkEhtLiNz53jrA==}
+  jazz-crypto-rs@0.0.6:
+    resolution: {integrity: sha512-+hJM9hPzMjK7Jk9++sUs5mKXlFiCTMDZ2wjO8WsfNpY7RZ+kiYSwkCrKvvvDRHSXPlzoyFQFxrSrXqN0/Fr6Yw==}
+
+  jazz-nodejs@0.10.8:
+    resolution: {integrity: sha512-eVko5VL8124lDVZwww78eTHv2h+zu6odQ+jZxN+9SldQH1tpBxgYrajaLzkAnXQJix/L8wwk1j4coJUZ0B92YQ==}
+
+  jazz-react-core@0.10.8:
+    resolution: {integrity: sha512-D0LHrXsN+PEQFTwrozxKxQngH7ZA92ypcX5jIcjWGq5NYDUfEbjiCaY4Y7xiugwjNEhc9GiqTzevSwOopYzWuQ==}
     peerDependencies:
-      react: ^17.0.0 || ^18.0.0
-      react-dom: ^17.0.0 || ^18.0.0
+      react: ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  jazz-tools@0.8.44:
-    resolution: {integrity: sha512-fFRY3rDCflfKg5fq7ECycMrOkIt8x7bamPovNpWQd2QOSWv/BhXcU2gpRHc89HwwHuAB/zmvMCRpMCfKa18cng==}
+  jazz-react@0.10.9:
+    resolution: {integrity: sha512-u+FLPrBXlVTxJgmD2wo5wg051i3W0jkk146SzwL7RYIgzCoZmgYt3NsQWaeK3+U63YXP0ZkTafJmOvTSqtxIzQ==}
+    peerDependencies:
+      react: ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
+
+  jazz-tools@0.10.8:
+    resolution: {integrity: sha512-VlFwXOMK9CCN1DbVEKgjCCTW+VFjJpxGXDy+GnHNj3RyRrAorGTOk0/Lyol5m6yBQolnpq+bbxZ47kXitF5h8g==}
 
   jiti@1.21.7:
     resolution: {integrity: sha512-/imKNG4EbWNrVjoNC/1H5/9GFy+tqjGBHCaSsN+P2RnPqjsLmv6UD3Ej+Kj8nBWaRAwyk7kK5ZUc+OEatnTR3A==}
@@ -1162,8 +1158,8 @@ packages:
     resolution: {integrity: sha512-iGBUfFB7yPczHHtA8dksKTJ9E8TESNTAx1UQWW6TzMF280vo9jdPYpLUXrMN1BCkPdHFdNG3fxOt2CUad8KhAw==}
     engines: {node: '>=18'}
 
-  next@15.1.2:
-    resolution: {integrity: sha512-nLJDV7peNy+0oHlmY2JZjzMfJ8Aj0/dd3jCwSZS8ZiO5nkQfcZRqDrRN3U5rJtqVTQneIOGZzb6LCNrk7trMCQ==}
+  next@15.1.7:
+    resolution: {integrity: sha512-GNeINPGS9c6OZKCvKypbL8GTsT5GhWPp4DM0fzkXJuXMilOO2EeFxuAY6JZbtk6XIl6Ws10ag3xRINDjSO5+wg==}
     engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
     hasBin: true
     peerDependencies:
@@ -1282,9 +1278,6 @@ packages:
 
   property-information@6.5.0:
     resolution: {integrity: sha512-PgTgs/BlvHxOu8QuEN7wi5A0OmXaBcHpmCSTehcs6Uuu9IkDIEo13Hy7n898RHfrQ49vKCoGeWZSaAK01nwVig==}
-
-  pure-rand@6.1.0:
-    resolution: {integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==}
 
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
@@ -1591,22 +1584,6 @@ snapshots:
 
   '@floating-ui/utils@0.2.8': {}
 
-  '@hazae41/berith@1.2.6':
-    dependencies:
-      '@hazae41/box': 1.0.14
-
-  '@hazae41/box@1.0.14':
-    dependencies:
-      '@hazae41/result': 1.3.2
-
-  '@hazae41/option@1.1.4':
-    dependencies:
-      '@hazae41/result': 1.3.2
-
-  '@hazae41/result@1.3.2':
-    dependencies:
-      '@hazae41/option': 1.1.4
-
   '@img/sharp-darwin-arm64@0.33.5':
     optionalDependencies:
       '@img/sharp-libvips-darwin-arm64': 1.0.4
@@ -1708,30 +1685,30 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@next/env@15.1.2': {}
+  '@next/env@15.1.7': {}
 
-  '@next/swc-darwin-arm64@15.1.2':
+  '@next/swc-darwin-arm64@15.1.7':
     optional: true
 
-  '@next/swc-darwin-x64@15.1.2':
+  '@next/swc-darwin-x64@15.1.7':
     optional: true
 
-  '@next/swc-linux-arm64-gnu@15.1.2':
+  '@next/swc-linux-arm64-gnu@15.1.7':
     optional: true
 
-  '@next/swc-linux-arm64-musl@15.1.2':
+  '@next/swc-linux-arm64-musl@15.1.7':
     optional: true
 
-  '@next/swc-linux-x64-gnu@15.1.2':
+  '@next/swc-linux-x64-gnu@15.1.7':
     optional: true
 
-  '@next/swc-linux-x64-musl@15.1.2':
+  '@next/swc-linux-x64-musl@15.1.7':
     optional: true
 
-  '@next/swc-win32-arm64-msvc@15.1.2':
+  '@next/swc-win32-arm64-msvc@15.1.7':
     optional: true
 
-  '@next/swc-win32-x64-msvc@15.1.2':
+  '@next/swc-win32-x64-msvc@15.1.7':
     optional: true
 
   '@noble/ciphers@0.1.4': {}
@@ -2185,29 +2162,28 @@ snapshots:
 
   clsx@2.1.1: {}
 
-  cojson-storage-indexeddb@0.8.44:
+  cojson-storage-indexeddb@0.10.8:
     dependencies:
-      cojson: 0.8.44
-      cojson-storage: 0.8.44
+      cojson: 0.10.8
+      cojson-storage: 0.10.8
 
-  cojson-storage@0.8.44:
+  cojson-storage@0.10.8:
     dependencies:
-      cojson: 0.8.44
+      cojson: 0.10.8
 
-  cojson-transport-ws@0.8.44:
+  cojson-transport-ws@0.10.8:
     dependencies:
-      cojson: 0.8.44
+      cojson: 0.10.8
       typescript: 5.6.3
 
-  cojson@0.8.44:
+  cojson@0.10.8:
     dependencies:
-      '@hazae41/berith': 1.2.6
       '@noble/ciphers': 0.1.4
       '@noble/curves': 1.7.0
       '@noble/hashes': 1.6.1
       '@opentelemetry/api': 1.9.0
       '@scure/base': 1.2.1
-      hash-wasm: 4.12.0
+      jazz-crypto-rs: 0.0.6
       neverthrow: 7.2.0
       queueueue: 4.1.2
 
@@ -2278,10 +2254,6 @@ snapshots:
 
   extend@3.0.2: {}
 
-  fast-check@3.23.2:
-    dependencies:
-      pure-rand: 6.1.0
-
   fast-glob@3.3.2:
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -2330,8 +2302,6 @@ snapshots:
       path-scurry: 1.11.1
 
   glur@1.1.2: {}
-
-  hash-wasm@4.12.0: {}
 
   hasown@2.0.2:
     dependencies:
@@ -2411,37 +2381,51 @@ snapshots:
     optionalDependencies:
       '@pkgjs/parseargs': 0.11.0
 
-  jazz-browser-media-images@0.8.44:
+  jazz-browser-media-images@0.10.9:
     dependencies:
       '@types/image-blob-reduce': 4.1.4
       image-blob-reduce: 4.1.0
-      jazz-browser: 0.8.44
-      jazz-tools: 0.8.44
+      jazz-browser: 0.10.9
+      jazz-tools: 0.10.8
       pica: 9.0.1
       typescript: 5.6.3
 
-  jazz-browser@0.8.44:
+  jazz-browser@0.10.9:
     dependencies:
-      '@scure/bip39': 1.5.0
-      cojson: 0.8.44
-      cojson-storage-indexeddb: 0.8.44
-      cojson-transport-ws: 0.8.44
-      jazz-tools: 0.8.44
-      typescript: 5.6.3
+      cojson: 0.10.8
+      cojson-storage-indexeddb: 0.10.8
+      cojson-transport-ws: 0.10.8
+      jazz-tools: 0.10.8
 
-  jazz-react@0.8.44(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  jazz-crypto-rs@0.0.6: {}
+
+  jazz-nodejs@0.10.8:
     dependencies:
-      '@scure/bip39': 1.5.0
-      cojson: 0.8.44
-      jazz-browser: 0.8.44
-      jazz-tools: 0.8.44
+      cojson: 0.10.8
+      cojson-transport-ws: 0.10.8
+      jazz-tools: 0.10.8
+
+  jazz-react-core@0.10.8(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+    dependencies:
+      cojson: 0.10.8
+      jazz-tools: 0.10.8
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
 
-  jazz-tools@0.8.44:
+  jazz-react@0.10.9(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
-      cojson: 0.8.44
-      fast-check: 3.23.2
+      '@scure/bip39': 1.5.0
+      cojson: 0.10.8
+      jazz-browser: 0.10.9
+      jazz-react-core: 0.10.8(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      jazz-tools: 0.10.8
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
+  jazz-tools@0.10.8:
+    dependencies:
+      '@scure/bip39': 1.5.0
+      cojson: 0.10.8
 
   jiti@1.21.7: {}
 
@@ -2709,9 +2693,9 @@ snapshots:
 
   neverthrow@7.2.0: {}
 
-  next@15.1.2(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  next@15.1.7(@opentelemetry/api@1.9.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
-      '@next/env': 15.1.2
+      '@next/env': 15.1.7
       '@swc/counter': 0.1.3
       '@swc/helpers': 0.5.15
       busboy: 1.6.0
@@ -2721,14 +2705,14 @@ snapshots:
       react-dom: 19.0.0(react@19.0.0)
       styled-jsx: 5.1.6(react@19.0.0)
     optionalDependencies:
-      '@next/swc-darwin-arm64': 15.1.2
-      '@next/swc-darwin-x64': 15.1.2
-      '@next/swc-linux-arm64-gnu': 15.1.2
-      '@next/swc-linux-arm64-musl': 15.1.2
-      '@next/swc-linux-x64-gnu': 15.1.2
-      '@next/swc-linux-x64-musl': 15.1.2
-      '@next/swc-win32-arm64-msvc': 15.1.2
-      '@next/swc-win32-x64-msvc': 15.1.2
+      '@next/swc-darwin-arm64': 15.1.7
+      '@next/swc-darwin-x64': 15.1.7
+      '@next/swc-linux-arm64-gnu': 15.1.7
+      '@next/swc-linux-arm64-musl': 15.1.7
+      '@next/swc-linux-x64-gnu': 15.1.7
+      '@next/swc-linux-x64-musl': 15.1.7
+      '@next/swc-win32-arm64-msvc': 15.1.7
+      '@next/swc-win32-x64-msvc': 15.1.7
       '@opentelemetry/api': 1.9.0
       sharp: 0.33.5
     transitivePeerDependencies:
@@ -2823,8 +2807,6 @@ snapshots:
   prettier@3.4.2: {}
 
   property-information@6.5.0: {}
-
-  pure-rand@6.1.0: {}
 
   queue-microtask@1.2.3: {}
 
