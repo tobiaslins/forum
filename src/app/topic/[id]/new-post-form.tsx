@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Group, ImageDefinition } from "jazz-tools";
 import { createImage } from "jazz-browser-media-images";
 import { useAccount } from "jazz-react";
+import { LightboxImage } from "@/components/lightbox-image";
 
 export function NewPostForm({ topic }: { topic: Topic }) {
   const [content, setContent] = useState("");
@@ -73,7 +74,7 @@ export function NewPostForm({ topic }: { topic: Topic }) {
       <div className="flex flex-wrap gap-2 mb-2">
         {attachedImages.map((image) => (
           <div key={image.name} className="relative">
-            <img
+            <LightboxImage
               className="w-16 rounded border"
               src={URL.createObjectURL(image)}
               alt={image.name}

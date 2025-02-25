@@ -22,18 +22,13 @@ import { Textarea } from "@/components/ui/textarea";
 import { Group, ImageDefinition } from "jazz-tools";
 import { createImage } from "jazz-browser-media-images";
 import { CursorSync } from "@/components/cursor-sync";
+import { LightboxImage } from "@/components/lightbox-image";
 
 type CommentNode = {
   comment: Comment;
   children: CommentNode[];
 };
-export function RenderTopicPage({
-  forumId,
-  id,
-}: {
-  forumId: string;
-  id: string;
-}) {
+export function RenderTopicPage({ id }: { id: string }) {
   const subscribedTopic = useCoState(Topic, id as any, { comments: [{}] });
 
   const topic = subscribedTopic;
@@ -120,7 +115,10 @@ export function RenderTopicPage({
               {topic.images.map((image) => (
                 <ProgressiveImg key={image?.id} image={image}>
                   {({ src }) => (
-                    <img src={src} className="w-20 rounded border" />
+                    <LightboxImage
+                      src={src ?? ""}
+                      className="w-20 rounded border"
+                    />
                   )}
                 </ProgressiveImg>
               ))}
@@ -230,7 +228,10 @@ function CommentComponent({
               {comment.images.map((image, idx) => (
                 <ProgressiveImg key={idx} image={image}>
                   {({ src }) => (
-                    <img className="w-16 max-w-full rounded border" src={src} />
+                    <LightboxImage
+                      src={src ?? ""}
+                      className="w-16 max-w-full rounded border"
+                    />
                   )}
                 </ProgressiveImg>
               ))}
@@ -272,7 +273,12 @@ function CommentComponent({
                 >
                   Cancel
                 </Button>
-                <Button variant="primary" size="sm" onClick={handleSubmit} className="h-7 text-xs">
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={handleSubmit}
+                  className="h-7 text-xs"
+                >
                   Reply
                 </Button>
               </div>
