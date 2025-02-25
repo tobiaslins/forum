@@ -1,12 +1,12 @@
 "use client";
 
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Geist } from "next/font/google";
 import { JazzAndAuth } from "./jazz";
 import { useState, useEffect } from "react";
 import { Header } from "@/components/header";
 
-const inter = Inter({ subsets: ["latin"] });
+const geist = Geist({ subsets: ["latin"] });
 
 export default function RootLayout({
   children,
@@ -38,10 +38,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={darkMode ? "dark" : ""}>
       <body
-        className={`${inter.className} bg-background text-foreground min-h-screen`}
+        className={`${geist.className} bg-background text-foreground min-h-screen`}
       >
-        <Header isDarkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         <JazzAndAuth>
+          <Header isDarkMode={darkMode} toggleDarkMode={toggleDarkMode} />
           <main className="min-h-[calc(100vh-3.5rem)]">{children}</main>
         </JazzAndAuth>
       </body>
