@@ -7,10 +7,11 @@ export default async function TopicPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: { forum?: string };
+  searchParams: Promise<{ forum?: string }>;
 }) {
   const { id } = await params;
-  const forumId = searchParams.forum || "";
+  const { forum } = await searchParams;
+  const forumId = forum || "";
 
   return <RenderTopicPage id={id} forumId={forumId} />;
 }
