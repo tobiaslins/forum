@@ -1,7 +1,7 @@
 "use client";
 
 import { JazzAccount } from "@/schema";
-import { JazzProvider, DemoAuthBasicUI } from "jazz-react";
+import { JazzProvider } from "jazz-react";
 
 export function JazzAndAuth({ children }: { children: React.ReactNode }) {
   return (
@@ -9,12 +9,11 @@ export function JazzAndAuth({ children }: { children: React.ReactNode }) {
       <JazzProvider
         sync={{
           peer: "wss://cloud.jazz.tools/?key=forum@tobi.sh",
-          when: "signedUp",
+          when: "always",
         }}
         AccountSchema={JazzAccount}
       >
         {children}
-        {/* <DemoAuthBasicUI appName="Forum" /> */}
       </JazzProvider>
     </>
   );

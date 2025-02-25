@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .card-hover-effect {
+    @apply transition-all duration-200 hover:shadow-md hover:-translate-y-1;
+  }
+  
+  .shimmer {
+    @apply relative overflow-hidden before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_1.5s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -38,29 +48,29 @@
   }
 
   .dark {
-    --background: 20 15% 8%;
-    --foreground: 35 10% 95%;
-    --card: 20 15% 8%;
-    --card-foreground: 35 10% 95%;
-    --popover: 20 15% 8%;
-    --popover-foreground: 35 10% 95%;
-    --primary: 35 60% 75%;
-    --primary-foreground: 20 15% 8%;
-    --secondary: 20 15% 15%;
-    --secondary-foreground: 35 10% 95%;
-    --muted: 20 15% 15%;
-    --muted-foreground: 35 10% 65%;
-    --accent: 20 15% 15%;
-    --accent-foreground: 35 10% 95%;
-    --destructive: 0 65% 30%;
-    --destructive-foreground: 35 10% 95%;
-    --border: 20 15% 20%;
-    --input: 20 15% 20%;
-    --ring: 35 60% 75%;
-    --chart-1: 35 65% 65%;
-    --chart-2: 25 60% 60%;
-    --chart-3: 45 55% 65%;
-    --chart-4: 15 60% 60%;
-    --chart-5: 5 65% 65%;
+    --background: 220 14% 10%;
+    --foreground: 210 6% 98%;
+    --card: 220 14% 10%;
+    --card-foreground: 210 6% 98%;
+    --popover: 220 14% 10%;
+    --popover-foreground: 210 6% 98%;
+    --primary: 210 100% 60%;
+    --primary-foreground: 210 6% 98%;
+    --secondary: 220 14% 16%;
+    --secondary-foreground: 210 6% 98%;
+    --muted: 220 14% 16%;
+    --muted-foreground: 210 6% 65%;
+    --accent: 217 14% 20%;
+    --accent-foreground: 210 6% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 6% 98%;
+    --border: 220 14% 20%;
+    --input: 220 14% 20%;
+    --ring: 210 100% 60%;
+    --chart-1: 210 100% 60%;
+    --chart-2: 190 90% 60%;
+    --chart-3: 170 85% 60%;
+    --chart-4: 230 80% 60%;
+    --chart-5: 250 90% 60%;
   }
 }

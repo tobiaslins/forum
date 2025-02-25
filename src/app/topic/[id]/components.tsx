@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { MoreHorizontal, ThumbsUp, MessageCircle } from "lucide-react";
+import { MoreHorizontal, ThumbsUp, MessageCircle, CalendarDays, User } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { NewPostForm } from "./new-post-form";
 import { Button } from "@/components/ui/button";
@@ -28,7 +28,13 @@ type CommentNode = {
   comment: Comment;
   children: CommentNode[];
 };
-export function RenderTopicPage({ id }: { id: string }) {
+export function RenderTopicPage({
+  forumId,
+  id,
+}: {
+  forumId: string;
+  id: string;
+}) {
   const subscribedTopic = useCoState(Topic, id as any, { comments: [{}] });
 
   const topic = subscribedTopic;
@@ -87,51 +93,77 @@ export function RenderTopicPage({ id }: { id: string }) {
   };
 
   return (
-    <div className="max-w-xl mx-auto space-y-2">
-      {/* {forum && <CursorSync forum={forum} />} */}
-
-      <div className="rounded-xl bg-secondary p-4 relative">
-        <Link
-          href={topic?.forum?.id ? `/?forum=${topic?.forum?.id}` : "/"}
-          className="text-primary/80 text-xs hover:text-primary/90 fixed left-4 top-4"
-        >
-          Back
-        </Link>
-        <div className="flex items-start justify-between mt-1">
-          <h1 className="text-lg font-semibold text-card-foreground">
-            {topic ? topic.title : <Skeleton className="w-24 h-6" />}
-          </h1>
-          <div className="text-xs text-muted-foreground">
-            {formatDistanceToNow(topic?.createdAt ?? new Date())} ago
+    <div className="max-w-3xl mx-auto px-4 py-6 space-y-6">
+      <div className="rounded-lg bg-secondary border border-border shadow-sm overflow-hidden card-hover-effect">
+        <div className="p-6">
+          <div className="flex items-start justify-between mb-4">
+            <h1 className="text-xl font-semibold text-foreground">
+              {topic ? topic.title : <Skeleton className="w-48 h-7" />}
+            </h1>
+            <div className="text-xs text-muted-foreground flex items-center gap-1">
+              <CalendarDays className="h-3 w-3" />
+              <span>{formatDistanceToNow(topic?.createdAt ?? new Date())} ago</span>
+            </div>
           </div>
-        </div>
 
-        <div className="py-3">
-          <ReactMarkdown className="prose prose-sm dark:prose-invert max-w-none">
-            {topic?.body}
-          </ReactMarkdown>
-          {topic?.images && (
-            <div className="flex flex-wrap gap-2 mt-3">
+          <div className="prose prose-sm dark:prose-invert max-w-none mb-6">
+            <ReactMarkdown>
+              {topic?.body}
+            </ReactMarkdown>
+          </div>
+          
+          {topic?.images && topic.images.length > 0 && (
+            <div className="flex flex-wrap gap-3 mb-6">
               {topic.images.map((image) => (
                 <ProgressiveImg key={image?.id} image={image}>
                   {({ src }) => (
-                    <LightboxImage
-                      src={src ?? ""}
-                      className="w-20 rounded border"
+                    <LightboxImage 
+                      src={src ?? ""} 
+                      className="max-w-[200px] max-h-[200px] object-cover rounded-md border" 
                     />
                   )}
                 </ProgressiveImg>
               ))}
             </div>
           )}
+          
+          <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center gap-2">
+              <Avatar 
+                size="sm" 
+                src="/placeholder.svg" 
+                alt="Anonymous"
+              />
+              <span className="text-muted-foreground">Posted by Anonymous</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                asChild
+                className="text-xs"
+              >
+                <Link href={forumId ? `/?forum=${forumId}` : "/"}>
+                  Back to Forum
+                </Link>
+              </Button>
+            </div>
+          </div>
         </div>
-
-        {topic && <NewPostForm topic={topic} />}
-
-        <div className="space-y-2">
-          {topic?.comments && renderComments(organizeComments(topic.comments))}
-        </div>
+        
+        {topic && (
+          <div className="border-t border-border bg-secondary/50 p-6">
+            <NewPostForm topic={topic} />
+          </div>
+        )}
       </div>
+
+      {topic?.comments && topic.comments.length > 0 && (
+        <div className="space-y-3">
+          <h2 className="text-lg font-medium">Comments</h2>
+          {renderComments(organizeComments(topic.comments))}
+        </div>
+      )}
     </div>
   );
 }
@@ -186,29 +218,27 @@ function CommentComponent({
   };
 
   return (
-    <div className="p-2">
-      <div className="flex gap-2">
+    <div className="p-4 bg-secondary rounded-lg border border-border mb-2">
+      <div className="flex gap-3">
         <Avatar
           size="sm"
           src="/placeholder.svg"
-          alt={comment._edits?.content?.by?.profile?.name ?? ""}
-          status="online"
+          alt={comment._edits?.content?.by?.profile?.name ?? "Anonymous"}
         />
-        <div className="flex-1 space-y-2 group">
+        <div className="flex-1 space-y-3 group">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1">
-              <h3 className="font-medium text-card-foreground text-sm">
-                {comment._edits?.content?.by?.profile?.name ?? (
-                  <Skeleton className="w-20 h-5" />
-                )}
+            <div className="flex items-center gap-2">
+              <h3 className="font-medium text-foreground text-sm">
+                {comment._edits?.content?.by?.profile?.name || "Anonymous"}
               </h3>
-              <span className="text-muted-foreground text-xs">
-                • {formatDistanceToNow(comment.createdAt)} ago
+              <span className="text-muted-foreground text-xs flex items-center gap-1">
+                <CalendarDays className="h-3 w-3" />
+                {formatDistanceToNow(comment.createdAt)} ago
               </span>
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-6 w-6 p-0">
+                <Button variant="ghost" size="sm" className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
                   <MoreHorizontal className="h-3 w-3" />
                 </Button>
               </DropdownMenuTrigger>
@@ -221,16 +251,16 @@ function CommentComponent({
             </DropdownMenu>
           </div>
 
-          <p className="text-card-foreground text-sm">{comment.content}</p>
+          <p className="text-foreground text-sm">{comment.content}</p>
 
           {comment.images && comment.images?.length > 0 && (
-            <div className="flex flex-wrap gap-2 mt-1">
+            <div className="flex flex-wrap gap-2 my-3">
               {comment.images.map((image, idx) => (
                 <ProgressiveImg key={idx} image={image}>
                   {({ src }) => (
                     <LightboxImage
                       src={src ?? ""}
-                      className="w-16 max-w-full rounded border"
+                      className="max-w-[150px] max-h-[120px] rounded border object-cover"
                     />
                   )}
                 </ProgressiveImg>
@@ -238,49 +268,92 @@ function CommentComponent({
             </div>
           )}
 
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center justify-between gap-2 pt-1">
             {comment.reactions && (
               <ReactionOverview reactions={comment.reactions} />
             )}
             <Button
-              variant="primary"
+              variant="ghost"
               size="sm"
-              className="flex group-hover:opacity-100 opacity-0 duration-200 transition-opacity py-0 h-6 gap-1"
+              className="h-7 gap-1 text-xs"
               onClick={() => setIsReplyOpen((s) => !s)}
             >
               <MessageCircle className="h-3 w-3" />
-              <span className="text-xs">Reply</span>
+              <span>Reply</span>
             </Button>
           </div>
 
           {isReplyOpen && (
-            <div className="space-y-2 mt-2">
+            <div className="bg-background rounded-md border border-border p-3 mt-3">
+              <h4 className="text-xs font-medium mb-2">Reply to this comment</h4>
               <Textarea
-                placeholder="Write a reply..."
+                placeholder="Write your reply..."
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                className="min-h-[80px] w-full bg-primary/5 text-primary placeholder:text-primary/50 text-sm"
+                className="min-h-[80px] w-full bg-primary/5 text-primary placeholder:text-primary/50 text-sm mb-3"
               />
-              <div className="flex justify-end gap-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => {
-                    setIsReplyOpen(false);
-                    setContent("");
+              
+              {attachedImages.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {attachedImages.map((image) => (
+                    <div key={image.name} className="relative">
+                      <LightboxImage
+                        src={URL.createObjectURL(image)}
+                        alt={image.name}
+                        className="h-12 w-12 rounded border object-cover"
+                      />
+                      <Button
+                        className="absolute -top-1 -right-1 bg-red-500 w-4 h-4 p-0 text-white rounded-full text-xs flex items-center justify-center"
+                        onClick={() => {
+                          setAttachedImages(
+                            attachedImages.filter((i) => i !== image)
+                          );
+                        }}
+                      >
+                        x
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              <div className="flex justify-between items-center">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    if (e.target.files) {
+                      setAttachedImages([
+                        ...attachedImages,
+                        ...Array.from(e.target.files),
+                      ]);
+                    }
                   }}
-                  className="h-7 text-xs"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={handleSubmit}
-                  className="h-7 text-xs"
-                >
-                  Reply
-                </Button>
+                  className="text-xs text-muted-foreground file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary"
+                />
+                
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      setIsReplyOpen(false);
+                      setContent("");
+                      setAttachedImages([]);
+                    }}
+                    className="h-8 text-xs"
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    variant="primary" 
+                    size="sm" 
+                    onClick={handleSubmit} 
+                    className="h-8 text-xs"
+                  >
+                    Post Reply
+                  </Button>
+                </div>
               </div>
             </div>
           )}

@@ -1,21 +1,16 @@
 import { Topic } from "@/schema";
-
 import { RenderTopicPage } from "./components";
 import { getJazzWorker } from "@/app/jazz-worker";
 
 export default async function TopicPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: { forum?: string };
 }) {
   const { id } = await params;
-  // const worker = await getJazzWorker();
+  const forumId = searchParams.forum || "";
 
-  // const topic = await Topic.load(id as any, worker, { comments: [] });
-
-  // const asJson = JSON.stringify(topic);
-
-  // const test = JSON.parse(asJson);
-
-  return <RenderTopicPage id={id} />;
+  return <RenderTopicPage id={id} forumId={forumId} />;
 }

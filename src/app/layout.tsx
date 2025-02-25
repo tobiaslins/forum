@@ -4,8 +4,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { JazzAndAuth } from "./jazz";
 import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Moon, Sun } from "lucide-react";
+import { Header } from "@/components/header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,6 +16,16 @@ export default function RootLayout({
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
+    // Check system preference on initial load
+    if (typeof window !== "undefined") {
+      const isDarkMode = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
+      setDarkMode(isDarkMode);
+    }
+  }, []);
+
+  useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
     } else {
@@ -24,28 +33,17 @@ export default function RootLayout({
     }
   }, [darkMode]);
 
+  const toggleDarkMode = () => setDarkMode(!darkMode);
+
   return (
     <html lang="en" className={darkMode ? "dark" : ""}>
       <body
         className={`${inter.className} bg-background text-foreground min-h-screen`}
       >
-        <div className="container mx-auto py-4">
-          <div className="relative z-10">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setDarkMode(!darkMode)}
-              className="absolute right-0 top-0"
-            >
-              {darkMode ? (
-                <Sun className="h-[1rem] w-[1rem]" />
-              ) : (
-                <Moon className="h-[1rem] w-[1rem]" />
-              )}
-            </Button>
-          </div>
-          <JazzAndAuth>{children}</JazzAndAuth>
-        </div>
+        <Header isDarkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+        <JazzAndAuth>
+          <main className="min-h-[calc(100vh-3.5rem)]">{children}</main>
+        </JazzAndAuth>
       </body>
     </html>
   );
