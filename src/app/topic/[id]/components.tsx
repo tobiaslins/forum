@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { MoreHorizontal, ThumbsUp, MessageCircle, CalendarDays, User } from "lucide-react";
+import {
+  MoreHorizontal,
+  ThumbsUp,
+  MessageCircle,
+  CalendarDays,
+  User,
+} from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { NewPostForm } from "./new-post-form";
 import { Button } from "@/components/ui/button";
@@ -17,10 +23,10 @@ import {
 import { use, useState } from "react";
 import { ReactionOverview } from "@/components/reactions";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ProgressiveImg, useAccount, useCoState } from "jazz-react";
+import { ProgressiveImg, useAccount, useCoState } from "jazz-tools/react";
 import { Textarea } from "@/components/ui/textarea";
 import { Group, ImageDefinition } from "jazz-tools";
-import { createImage } from "jazz-browser-media-images";
+import { createImage } from "jazz-tools/browser-media-images";
 import { CursorSync } from "@/components/cursor-sync";
 import { LightboxImage } from "@/components/lightbox-image";
 
@@ -35,7 +41,9 @@ export function RenderTopicPage({
   forumId: string;
   id: string;
 }) {
-  const subscribedTopic = useCoState(Topic, id as any, { comments: [{}] });
+  const subscribedTopic = useCoState(Topic, id as any, {
+    resolve: { comments: { $each: true } },
+  });
 
   const topic = subscribedTopic;
   const organizeComments = (comments: Comment[]): CommentNode[] => {
@@ -102,47 +110,38 @@ export function RenderTopicPage({
             </h1>
             <div className="text-xs text-muted-foreground flex items-center gap-1">
               <CalendarDays className="h-3 w-3" />
-              <span>{formatDistanceToNow(topic?.createdAt ?? new Date())} ago</span>
+              <span>
+                {formatDistanceToNow(topic?.createdAt ?? new Date())} ago
+              </span>
             </div>
           </div>
 
           <div className="prose prose-sm dark:prose-invert max-w-none mb-6">
-            <ReactMarkdown>
-              {topic?.body}
-            </ReactMarkdown>
+            <ReactMarkdown>{topic?.body}</ReactMarkdown>
           </div>
-          
+
           {topic?.images && topic.images.length > 0 && (
             <div className="flex flex-wrap gap-3 mb-6">
               {topic.images.map((image) => (
                 <ProgressiveImg key={image?.id} image={image}>
                   {({ src }) => (
-                    <LightboxImage 
-                      src={src ?? ""} 
-                      className="max-w-[200px] max-h-[200px] object-cover rounded-md border" 
+                    <LightboxImage
+                      src={src ?? ""}
+                      className="max-w-[200px] max-h-[200px] object-cover rounded-md border"
                     />
                   )}
                 </ProgressiveImg>
               ))}
             </div>
           )}
-          
+
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2">
-              <Avatar 
-                size="sm" 
-                src="/placeholder.svg" 
-                alt="Anonymous"
-              />
+              <Avatar size="sm" src="/placeholder.svg" alt="Anonymous" />
               <span className="text-muted-foreground">Posted by Anonymous</span>
             </div>
             <div className="flex items-center gap-2">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                asChild
-                className="text-xs"
-              >
+              <Button variant="outline" size="sm" asChild className="text-xs">
                 <Link href={forumId ? `/?forum=${forumId}` : "/"}>
                   Back to Forum
                 </Link>
@@ -150,7 +149,7 @@ export function RenderTopicPage({
             </div>
           </div>
         </div>
-        
+
         {topic && (
           <div className="border-t border-border bg-secondary/50 p-6">
             <NewPostForm topic={topic} />
@@ -238,7 +237,11 @@ function CommentComponent({
             </div>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
                   <MoreHorizontal className="h-3 w-3" />
                 </Button>
               </DropdownMenuTrigger>
@@ -285,14 +288,16 @@ function CommentComponent({
 
           {isReplyOpen && (
             <div className="bg-background rounded-md border border-border p-3 mt-3">
-              <h4 className="text-xs font-medium mb-2">Reply to this comment</h4>
+              <h4 className="text-xs font-medium mb-2">
+                Reply to this comment
+              </h4>
               <Textarea
                 placeholder="Write your reply..."
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 className="min-h-[80px] w-full bg-primary/5 text-primary placeholder:text-primary/50 text-sm mb-3"
               />
-              
+
               {attachedImages.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-3">
                   {attachedImages.map((image) => (
@@ -306,7 +311,7 @@ function CommentComponent({
                         className="absolute -top-1 -right-1 bg-red-500 w-4 h-4 p-0 text-white rounded-full text-xs flex items-center justify-center"
                         onClick={() => {
                           setAttachedImages(
-                            attachedImages.filter((i) => i !== image)
+                            attachedImages.filter((i) => i !== image),
                           );
                         }}
                       >
@@ -316,7 +321,7 @@ function CommentComponent({
                   ))}
                 </div>
               )}
-              
+
               <div className="flex justify-between items-center">
                 <input
                   type="file"
@@ -331,7 +336,7 @@ function CommentComponent({
                   }}
                   className="text-xs text-muted-foreground file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary"
                 />
-                
+
                 <div className="flex gap-2">
                   <Button
                     variant="outline"
@@ -345,10 +350,10 @@ function CommentComponent({
                   >
                     Cancel
                   </Button>
-                  <Button 
-                    variant="primary" 
-                    size="sm" 
-                    onClick={handleSubmit} 
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    onClick={handleSubmit}
                     className="h-8 text-xs"
                   >
                     Post Reply

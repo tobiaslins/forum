@@ -5,8 +5,8 @@ import { Topic, Comment, Reactions, ListOfImages } from "@/schema";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Group, ImageDefinition } from "jazz-tools";
-import { createImage } from "jazz-browser-media-images";
-import { useAccount } from "jazz-react";
+import { createImage } from "jazz-tools/browser-media-images";
+import { useAccount } from "jazz-tools/react";
 import { LightboxImage } from "@/components/lightbox-image";
 
 export function NewPostForm({ topic }: { topic: Topic }) {
@@ -82,9 +82,7 @@ export function NewPostForm({ topic }: { topic: Topic }) {
             <Button
               className="absolute -top-2 -right-2 bg-red-500 w-4 p-0 text-white rounded-full h-4 text-xs flex items-center justify-center"
               onClick={() => {
-                setAttachedImages(
-                  attachedImages.filter((i) => i !== image)
-                );
+                setAttachedImages(attachedImages.filter((i) => i !== image));
               }}
             >
               x
@@ -106,7 +104,12 @@ export function NewPostForm({ topic }: { topic: Topic }) {
           }}
           className="text-xs text-gray-500 file:mr-3 file:py-1 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-primary/10 file:text-primary"
         />
-        <Button size="sm" type="submit" variant="primary" className="h-7 text-xs">
+        <Button
+          size="sm"
+          type="submit"
+          variant="primary"
+          className="h-7 text-xs"
+        >
           Post
         </Button>
       </div>

@@ -8,6 +8,7 @@ import {
   ListOfComments,
   ListOfImages,
   CursorLocation,
+  JazzAccount,
 } from "../schema";
 import { Group, ID, ImageDefinition } from "jazz-tools";
 import { MessageCircle, PlusCircle, CalendarDays } from "lucide-react";
@@ -23,22 +24,24 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { createImage } from "jazz-browser-media-images";
+import { createImage } from "jazz-tools/browser-media-images";
 import { CursorSync } from "@/components/cursor-sync";
-import { useCoState, useAccount, ProgressiveImg } from "jazz-react";
+import { useCoState, useAccount, ProgressiveImg } from "jazz-tools/react";
 import { Sidebar } from "@/components/sidebar";
 import { MobileNav } from "@/components/mobile-nav";
 import { LightboxImage } from "@/components/lightbox-image";
 import { formatDistanceToNow } from "date-fns";
 
 export default function Home() {
-  const { me: meState } = useAccount({ root: { forums: [] } });
+  const { me: meState } = useAccount(JazzAccount, {
+    resolve: { root: { forums: true } },
+  });
   const { me } = useAccount();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [forumID, setForumID] = useState<ID<Forum>>(
-    (searchParams.get("forum") as ID<Forum>) ||
-      ("co_zF5AYiGV3P3NFhAicXpqqcjP5KR" as ID<Forum>),
+  const [forumID, setForumID] = useState<string>(
+    (searchParams.get("forum") as string) ||
+      ("co_zF5AYiGV3P3NFhAicXpqqcjP5KR" as string),
   );
 
   const [newTopicImages, setNewTopicImages] = useState<File[]>([]);
@@ -47,7 +50,9 @@ export default function Home() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const hasAdded = useRef(false);
 
-  const forum = useCoState(Forum, forumID, { topics: [{}] });
+  const forum = useCoState(Forum, forumID, {
+    resolve: { topics: { $each: true } },
+  });
 
   const createForum = (name: string) => {
     const group = Group.create({ owner: me });
@@ -143,8 +148,6 @@ export default function Home() {
 
   return (
     <div className="flex">
-      {forum ? <CursorSync forum={forum} /> : null}
-
       {/* Sidebar for larger screens */}
       <Sidebar forums={uniqueForums} selectedForumId={forumID as string} />
 

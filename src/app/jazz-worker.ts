@@ -1,4 +1,4 @@
-import { startWorker } from "jazz-nodejs";
+import { startWorker } from "jazz-tools/node";
 import { JazzAccount } from "@/schema";
 
 let jazzWorker: JazzAccount;

@@ -1,12 +1,13 @@
 "use client";
 
 import { JazzAccount } from "@/schema";
-import { JazzProvider } from "jazz-react";
+import { JazzReactProvider } from "jazz-tools/react";
 
 export function JazzAndAuth({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <JazzProvider
+      <JazzReactProvider
+        enableSSR
         sync={{
           peer: "wss://cloud.jazz.tools/?key=forum@tobi.sh",
           when: "always",
@@ -14,7 +15,7 @@ export function JazzAndAuth({ children }: { children: React.ReactNode }) {
         AccountSchema={JazzAccount}
       >
         {children}
-      </JazzProvider>
+      </JazzReactProvider>
     </>
   );
 }

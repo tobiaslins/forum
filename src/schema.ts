@@ -1,89 +1,68 @@
 import {
-  CoMap,
-  CoList,
   co,
   Profile,
   Account,
   CoFeed,
   ImageDefinition,
+  z,
+  CoMapSchema,
 } from "jazz-tools";
 
 export const ReactionTypes = ["love", "haha", null] as const;
 export type ReactionType = (typeof ReactionTypes)[number];
-export class Reactions extends CoFeed.Of(co.json<ReactionType>()) {}
+export const ListOfImages = co.list(ImageDefinition);
+export const Reactions = co.feed(z.json());
 
-export class Comment extends CoMap {
-  content = co.string;
-  createdAt = co.number;
-  likes = co.number;
-  reactions = co.ref(Reactions);
-  parentComment = co.ref(Comment, { optional: true });
-  images = co.ref(ListOfImages, {
-    optional: true,
-  });
-}
+export const Comment = co.map({
+  content: z.string(),
+  createdAt: z.number(),
+  likes: z.number(),
+  reactions: Reactions,
+  get parentComment(): CoMapSchema<typeof Comment> {
+    return Comment;
+  },
+  images: z.optional(ListOfImages),
+});
 
-export class ListOfComments extends CoList.Of(co.ref(Comment)) {}
-export class ListOfImages extends CoList.Of(co.ref(ImageDefinition)) {}
+export const ListOfComments = co.list(Comment);
 
-export class Topic extends CoMap {
-  title = co.string;
-  body = co.string;
-  postCount = co.number;
-  comments = co.ref(ListOfComments);
-  createdAt = co.number;
+export const CursorLocation = co.feed(z.json());
 
-  images = co.ref(ListOfImages, {
-    optional: true,
-  });
+export const JazzProfile = co.profile({
+  name: z.string(),
+});
 
-  forum = co.ref(Forum);
-}
+export const Topic = co.map({
+  title: z.string(),
+  body: z.string(),
+  postCount: z.number(),
+  comments: ListOfComments,
+  createdAt: z.number(),
+  images: z.optional(ListOfImages),
+  get forum(): CoMapSchema<typeof Forum> {
+    return Forum;
+  },
+});
+export const ListOfTopics = co.list(Topic);
 
-export class CursorLocation extends CoFeed.Of(
-  co.json<{
-    x: number;
-    y: number;
-    innerHeight: number;
-    innerWidth: number;
-  }>(),
-) {}
+export const Forum = co.map({
+  name: z.string(),
+  topics: ListOfTopics,
+  cursorLocations: z.optional(CursorLocation),
+});
 
-export class ListOfTopics extends CoList.Of(co.ref(Topic)) {}
+export const ListOfForums = co.list(Forum);
+export const JazzRoot = co.map({
+  forums: ListOfForums,
+});
 
-export class Forum extends CoMap {
-  name = co.string;
-  topics = co.ref(ListOfTopics);
-  cursorLocations = co.ref(CursorLocation, {
-    optional: true,
-  });
-}
-
-export class JazzProfile extends Profile {}
-
-export class JazzRoot extends CoMap {
-  forums = co.ref(ListOfForums);
-}
-export class ListOfForums extends CoList.Of(co.ref(Forum)) {}
-
-export class JazzAccount extends Account {
-  profile = co.ref(JazzProfile);
-  root = co.ref(JazzRoot);
-
-  /** The account migration is run on account creation and on every log-in.
-   *  You can use it to set up the account root and any other initial CoValues you need.
-   */
-  migrate(this: JazzAccount, creationProps?: { name: string }) {
-    super.migrate(creationProps);
-
-    if (!this._refs.root) {
-      this.root = JazzRoot.create({ forums: ListOfForums.create([]) });
+export const JazzAccount = co
+  .account({
+    profile: JazzProfile,
+    root: JazzRoot,
+  })
+  .withMigration((account) => {
+    if (!account.root) {
+      account.root = JazzRoot.create({ forums: ListOfForums.create([]) });
     }
-  }
-}
-
-declare module "jazz-react" {
-  interface Register {
-    Account: JazzAccount;
-  }
-}
+  });

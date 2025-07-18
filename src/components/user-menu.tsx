@@ -1,39 +1,33 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { 
-  User, 
-  LogOut, 
-  Settings,
-  UserCircle,
-  LogIn
-} from "lucide-react"
-import { Avatar } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { User, LogOut, Settings, UserCircle, LogIn } from "lucide-react";
+import { Avatar } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { UserAuthModal } from "@/components/user-auth-modal"
-import { ProfileSettingsModal } from "@/components/profile-settings-modal"
-import { useAccount, useIsAuthenticated } from "jazz-react"
+} from "@/components/ui/dropdown-menu";
+import { UserAuthModal } from "@/components/user-auth-modal";
+import { ProfileSettingsModal } from "@/components/profile-settings-modal";
+import { useAccount, useIsAuthenticated } from "jazz-tools/react";
 
 export function UserMenu() {
-  const { me } = useAccount()
-  const [authModalOpen, setAuthModalOpen] = useState(false)
-  const [profileModalOpen, setProfileModalOpen] = useState(false)
-  const isAuthenticated = useIsAuthenticated()
-  
-  const username = me?.profile?.name || "User"
-  
+  const { me } = useAccount();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const isAuthenticated = useIsAuthenticated();
+
+  const username = me?.profile?.name || "User";
+
   const handleSignOut = async () => {
     // Implement sign out logic if needed
     // For example: auth.signOut()
-    window.location.reload()
-  }
+    window.location.reload();
+  };
 
   return (
     <>
@@ -41,7 +35,7 @@ export function UserMenu() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-              <Avatar 
+              <Avatar
                 src={`https://avatar.vercel.sh/${username}`}
                 alt={username}
                 size="sm"
@@ -54,7 +48,7 @@ export function UserMenu() {
               <div className="flex flex-col space-y-1 leading-none">
                 <p className="font-medium">{username}</p>
                 <p className="text-xs text-muted-foreground truncate">
-                  Signed in with Passkey
+                  Signed in with Passphrase
                 </p>
               </div>
             </div>
@@ -71,9 +65,9 @@ export function UserMenu() {
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
-        <Button 
-          variant="outline" 
-          size="sm" 
+        <Button
+          variant="outline"
+          size="sm"
           className="gap-1"
           onClick={() => setAuthModalOpen(true)}
         >
@@ -81,16 +75,11 @@ export function UserMenu() {
           <span>Sign In</span>
         </Button>
       )}
-      
-      <UserAuthModal 
-        isOpen={authModalOpen}
-        onOpenChange={setAuthModalOpen}
-      />
-      
+
       <ProfileSettingsModal
         isOpen={profileModalOpen}
         onOpenChange={setProfileModalOpen}
       />
     </>
-  )
+  );
 }
