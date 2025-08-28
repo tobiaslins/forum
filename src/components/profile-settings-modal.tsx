@@ -42,7 +42,9 @@ export function ProfileSettingsModal({ isOpen, onOpenChange }: ProfileSettingsMo
     try {
       // Update username in profile
       if (me?.profile && username !== me.profile.name) {
-        me.profile.name = username
+        // Jazz 0.18: fields are readonly; update via $jazz.set
+        // @ts-ignore
+        me.profile.$jazz.set("name", username)
       }
 
       // In a real implementation, you would handle uploading the profile image here

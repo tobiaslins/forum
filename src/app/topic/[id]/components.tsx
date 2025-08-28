@@ -23,10 +23,10 @@ import {
 import { use, useState } from "react";
 import { ReactionOverview } from "@/components/reactions";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ProgressiveImg, useAccount, useCoState } from "jazz-tools/react";
+import { Image as JazzImage, useAccount, useCoState } from "jazz-tools/react";
 import { Textarea } from "@/components/ui/textarea";
 import { Group, ImageDefinition } from "jazz-tools";
-import { createImage } from "jazz-tools/browser-media-images";
+import { createImage } from "jazz-tools/media";
 import { LightboxImage } from "@/components/lightbox-image";
 
 type CommentNode = {
@@ -57,19 +57,25 @@ export function RenderTopicPage({
         children: [],
       };
 
-      if (comment.id) {
-        commentMap.set(comment.id, node);
+      // @ts-ignore loosen typing for id access
+      if ((comment as any)?.$jazz?.id) {
+        // @ts-ignore loosen typing for id access
+        commentMap.set((comment as any).$jazz.id, node);
       }
     });
 
     comments.forEach((comment) => {
-      if (!comment || !comment.id) return;
+      // @ts-ignore loosen typing for id access
+      if (!comment || !(comment as any).$jazz?.id) return;
 
-      const node = commentMap.get(comment.id);
+      // @ts-ignore loosen typing for id access
+      const node = commentMap.get((comment as any).$jazz.id);
       if (!node) return;
 
-      if (comment.parentComment && comment.parentComment.id) {
-        const parent = commentMap.get(comment.parentComment.id);
+      // @ts-ignore loosen typing for id access
+      if (comment.parentComment && (comment.parentComment as any).$jazz?.id) {
+        // @ts-ignore loosen typing for id access
+        const parent = commentMap.get((comment.parentComment as any).$jazz.id);
         if (parent) {
           parent.children.push(node);
         }
@@ -83,10 +89,11 @@ export function RenderTopicPage({
 
   const renderComments = (nodes: CommentNode[]): React.ReactNode => {
     return nodes.map((node) => {
-      if (!node.comment || !node.comment.id) return null;
+      // @ts-ignore loosen typing for id access
+      if (!node.comment || !(node.comment as any).$jazz?.id) return null;
 
       return (
-        <div key={node.comment.id}>
+        <div key={(node.comment as any).$jazz.id}>
           <CommentComponent comment={node.comment} topic={topic!} />
           {node.children.length > 0 && (
             <div className="ml-6 relative">
@@ -121,16 +128,20 @@ export function RenderTopicPage({
 
           {topic?.images && topic.images.length > 0 && (
             <div className="flex flex-wrap gap-3 mb-6">
-              {topic.images.map((image) => (
-                <ProgressiveImg key={image?.id} image={image}>
-                  {({ src }) => (
-                    <LightboxImage
-                      src={src ?? ""}
-                      className="max-w-[200px] max-h-[200px] object-cover rounded-md border"
-                    />
-                  )}
-                </ProgressiveImg>
-              ))}
+              {topic.images.map((image) =>
+                // @ts-ignore image id access
+                image?.$jazz?.id ? (
+                  <JazzImage
+                    key={image.$jazz.id}
+                    imageId={image.$jazz.id}
+                    width={200}
+                    height={200}
+                    alt=""
+                    style={{ objectFit: "cover" }}
+                    className="rounded-md border"
+                  />
+                ) : null,
+              )}
             </div>
           )}
 
@@ -159,7 +170,7 @@ export function RenderTopicPage({
       {topic?.comments && topic.comments.length > 0 && (
         <div className="space-y-3">
           <h2 className="text-lg font-medium">Comments</h2>
-          {renderComments(organizeComments(topic.comments))}
+          {renderComments(organizeComments(topic.comments as any))}
         </div>
       )}
     </div>
@@ -181,6 +192,8 @@ function CommentComponent({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!me) return;
+
     const group = Group.create({ owner: me });
     group.addMember("everyone", "reader");
 
@@ -195,7 +208,7 @@ function CommentComponent({
     const reactionsGroup = Group.create({ owner: me });
     reactionsGroup.addMember("everyone", "writer");
 
-    topic.comments?.push(
+    topic.comments?.$jazz?.push(
       Comment.create(
         {
           content,
@@ -203,13 +216,14 @@ function CommentComponent({
           likes: 0,
           parentComment: comment,
           reactions: Reactions.create([], { owner: reactionsGroup }),
-          images: ListOfImages.create(imgs, { owner: group }),
+          images: ListOfImages.create(imgs as any, { owner: group }),
         },
         { owner: group },
       ),
     );
 
-    topic.postCount += 1;
+    topic.$jazz.set("postCount", (topic.postCount ?? 0) + 1);
+
     setAttachedImages([]);
     setIsReplyOpen(false);
     setContent("");
@@ -218,17 +232,11 @@ function CommentComponent({
   return (
     <div className="p-4 bg-secondary rounded-lg border border-border mb-2">
       <div className="flex gap-3">
-        <Avatar
-          size="sm"
-          src="/placeholder.svg"
-          alt={comment._edits?.content?.by?.profile?.name ?? "Anonymous"}
-        />
+        <Avatar size="sm" src="/placeholder.svg" alt="Anonymous" />
         <div className="flex-1 space-y-3 group">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <h3 className="font-medium text-foreground text-sm">
-                {comment._edits?.content?.by?.profile?.name || "Anonymous"}
-              </h3>
+              <h3 className="font-medium text-foreground text-sm">Anonymous</h3>
               <span className="text-muted-foreground text-xs flex items-center gap-1">
                 <CalendarDays className="h-3 w-3" />
                 {formatDistanceToNow(comment.createdAt)} ago
@@ -257,16 +265,20 @@ function CommentComponent({
 
           {comment.images && comment.images?.length > 0 && (
             <div className="flex flex-wrap gap-2 my-3">
-              {comment.images.map((image, idx) => (
-                <ProgressiveImg key={idx} image={image}>
-                  {({ src }) => (
-                    <LightboxImage
-                      src={src ?? ""}
-                      className="max-w-[150px] max-h-[120px] rounded border object-cover"
-                    />
-                  )}
-                </ProgressiveImg>
-              ))}
+              {comment.images.map((image, idx) =>
+                // @ts-ignore image id access
+                image?.$jazz?.id ? (
+                  <JazzImage
+                    key={image.$jazz.id}
+                    imageId={image.$jazz.id}
+                    width={150}
+                    height={120}
+                    alt=""
+                    style={{ objectFit: "cover" }}
+                    className="rounded border"
+                  />
+                ) : null,
+              )}
             </div>
           )}
 

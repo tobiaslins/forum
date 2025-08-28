@@ -1,7 +1,8 @@
 import { startWorker } from "jazz-tools/worker";
+import type { InstanceOfSchema } from "jazz-tools";
 import { JazzAccount } from "@/schema";
 
-let jazzWorker: typeof JazzAccount;
+let jazzWorker: InstanceOfSchema<typeof JazzAccount>;
 
 export const getJazzWorker = async () => {
   if (jazzWorker) return jazzWorker;

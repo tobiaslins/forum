@@ -1,12 +1,4 @@
-import {
-  co,
-  Profile,
-  Account,
-  CoFeed,
-  ImageDefinition,
-  z,
-  CoMapSchema,
-} from "jazz-tools";
+import { co, Profile, Account, CoFeed, ImageDefinition, z } from "jazz-tools";
 
 export const ReactionTypes = ["love", "haha", null] as const;
 export type ReactionType = (typeof ReactionTypes)[number];
@@ -18,11 +10,12 @@ export const Comment = co.map({
   createdAt: z.number(),
   likes: z.number(),
   reactions: Reactions,
-  get parentComment(): CoMapSchema<typeof Comment> {
+  get parentComment() {
     return Comment;
   },
-  images: z.optional(ListOfImages),
+  images: co.optional(ListOfImages),
 });
+export type Comment = co.loaded<typeof Comment>;
 
 export const ListOfComments = co.list(Comment);
 
@@ -36,22 +29,25 @@ export const Topic = co.map({
   title: z.string(),
   body: z.string(),
   postCount: z.number(),
-  comments: ListOfComments,
+  comments: co.optional(ListOfComments),
   createdAt: z.number(),
-  images: z.optional(ListOfImages),
-  get forum(): CoMapSchema<typeof Forum> {
+  images: co.optional(ListOfImages),
+  get forum() {
     return Forum;
   },
 });
+export type Topic = co.loaded<typeof Topic>;
 export const ListOfTopics = co.list(Topic);
+export type ListOfTopics = co.loaded<typeof ListOfTopics>;
 
 export const Forum = co.map({
   name: z.string(),
   topics: ListOfTopics,
-  cursorLocations: z.optional(CursorLocation),
+  cursorLocations: co.optional(CursorLocation),
 });
-
+export type Forum = co.loaded<typeof Forum>;
 export const ListOfForums = co.list(Forum);
+export type ListOfForums = co.loaded<typeof ListOfForums>;
 export const JazzRoot = co.map({
   forums: ListOfForums,
 });
@@ -62,7 +58,10 @@ export const JazzAccount = co
     root: JazzRoot,
   })
   .withMigration((account) => {
-    if (!account.root) {
-      account.root = JazzRoot.create({ forums: ListOfForums.create([]) });
+    if (account.root === undefined) {
+      account.$jazz.set(
+        "root",
+        JazzRoot.create({ forums: ListOfForums.create([]) }),
+      );
     }
   });

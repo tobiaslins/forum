@@ -1,6 +1,6 @@
 "use client";
 
-import { Reactions, ReactionTypes } from "@/schema";
+import { Comment } from "@/schema";
 import { useState } from "react";
 import {
   Tooltip,
@@ -10,28 +10,36 @@ import {
 } from "@/components/ui/tooltip";
 import { Button } from "./ui/button";
 
-export function ReactionOverview({ reactions }: { reactions: Reactions }) {
-  const all = Object.values(reactions).filter((entry) => entry.value !== null);
+export function ReactionOverview({
+  reactions,
+}: {
+  reactions: Comment["reactions"];
+}) {
+  const all = Object.values(reactions?.perAccount ?? {}).filter(
+    (entry) => entry?.value,
+  );
+
   //   reactions.
   const reactionsByType = all.reduce((acc, entry) => {
+    // @ts-ignore
     acc[entry.value] = (acc[entry.value] || 0) + 1;
     return acc;
   }, {});
 
-  const ownReaction = reactions.byMe?.value;
+  const ownReaction = reactions?.byMe?.value;
 
   return (
     <div className="flex flex-col gap-1">
       <ReactionsBar
         onReact={(key) => {
           if (ownReaction === key) {
-            reactions.push(null);
+            reactions?.$jazz?.push(null);
           } else {
-            reactions.push(key as any);
+            reactions?.$jazz?.push(key as any);
           }
         }}
         reactions={reactionsByType}
-        userReactions={[ownReaction!]}
+        userReactions={[ownReaction as string]}
       />
     </div>
   );

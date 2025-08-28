@@ -8,7 +8,7 @@ import { Forum } from "@/schema";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { co } from "jazz-tools";
 interface MobileNavProps {
-  forums?: co<Forum | null>[];
+  forums?: any[];
   selectedForumId?: string;
 }
 

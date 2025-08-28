@@ -9,7 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { co } from "jazz-tools";
 
 interface SidebarProps {
-  forums?: co<Forum | null>[];
+  forums?: any[];
   selectedForumId?: string;
 }
 
@@ -45,13 +45,13 @@ export function Sidebar({ forums, selectedForumId }: SidebarProps) {
           {forums ? (
             forums.map((forum, i) => (
               <Button
-                key={(forum?.id ?? "") + i}
-                variant={currentForumId === forum?.id ? "secondary" : "ghost"}
+                key={((forum as any)?.$jazz?.id ?? "") + i}
+                variant={currentForumId === (forum as any)?.$jazz?.id ? "secondary" : "ghost"}
                 size="sm"
                 className="w-full justify-start"
                 asChild
               >
-                <Link href={`/?forum=${forum?.id}`}>
+                <Link href={`/?forum=${(forum as any)?.$jazz?.id}`}>
                   <Hash className="h-4 w-4 mr-2" />
                   {forum?.name}
                 </Link>

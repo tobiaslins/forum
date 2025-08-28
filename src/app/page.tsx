@@ -1,16 +1,16 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useState, useEffect, useRef } from "react";
 import {
   Forum,
   ListOfTopics,
   Topic,
-  ListOfComments,
   ListOfImages,
-  CursorLocation,
   JazzAccount,
 } from "../schema";
-import { Group, ID, ImageDefinition } from "jazz-tools";
+import { Group, ImageDefinition } from "jazz-tools";
 import { MessageCircle, PlusCircle, CalendarDays } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -24,9 +24,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { createImage } from "jazz-tools/browser-media-images";
-import { CursorSync } from "@/components/cursor-sync";
-import { useCoState, useAccount, ProgressiveImg } from "jazz-tools/react";
+import { createImage } from "jazz-tools/media";
+import { useCoState, useAccount, Image as JazzImage } from "jazz-tools/react";
 import { Sidebar } from "@/components/sidebar";
 import { MobileNav } from "@/components/mobile-nav";
 import { LightboxImage } from "@/components/lightbox-image";
@@ -55,6 +54,7 @@ export default function Home() {
   });
 
   const createForum = (name: string) => {
+    if (!me) return;
     const group = Group.create({ owner: me });
     group.addMember("everyone", "writer");
 
@@ -62,11 +62,12 @@ export default function Home() {
       {
         name: name,
         topics: ListOfTopics.create([], { owner: group }),
-        cursorLocations: CursorLocation.create([], { owner: group }),
+        // not initialized here in 0.18
+        cursorLocations: undefined as never,
       },
       { owner: group },
-    );
-    meState?.root?.forums?.push(newForum);
+    ) as any;
+    meState?.root?.forums.$jazz?.push(newForum);
     setForumID(newForum.id);
     router.push(`/?forum=${newForum.id}`);
   };
@@ -82,13 +83,13 @@ export default function Home() {
 
   useEffect(() => {
     if (joinForum && !hasAdded.current) {
-      meState?.root?.forums?.push(joinForum as any);
+      meState?.root?.forums.$jazz?.push(joinForum as any);
       hasAdded.current = true;
     }
   }, [joinForum, meState]);
 
   const createTopic = async () => {
-    if (!forum || !newTopicTitle.trim() || !newTopicBody.trim()) return;
+    if (!forum || !newTopicTitle.trim() || !newTopicBody.trim() || !me) return;
 
     const topicGroup = Group.create({ owner: me });
     topicGroup.addMember("everyone", "reader");
@@ -96,25 +97,29 @@ export default function Home() {
     const imgs: ImageDefinition[] = [];
     for (const image of newTopicImages) {
       const uploaded = await createImage(image, {
-        owner: topicGroup.castAs(Group)!,
+        owner: topicGroup,
       });
       imgs.push(uploaded);
     }
 
-    forum.topics.push(
-      Topic.create(
-        {
-          title: newTopicTitle.trim(),
-          body: newTopicBody.trim(),
-          postCount: 1,
-          createdAt: Date.now(),
-          comments: ListOfComments.create([], { owner: forum._owner }),
-          images: ListOfImages.create(imgs, { owner: forum._owner }),
-          forum,
-        },
-        { owner: topicGroup },
-      ),
+    const topic = Topic.create(
+      {
+        title: newTopicTitle.trim(),
+        body: newTopicBody.trim(),
+        postCount: 1,
+        createdAt: Date.now(),
+        forum,
+      },
+      { owner: topicGroup },
     );
+
+    topic.$jazz.set("comments", []);
+    topic.$jazz.set(
+      "images",
+      ListOfImages.create(imgs as any, { owner: topicGroup }),
+    );
+
+    forum.topics.$jazz?.push(topic);
     setNewTopicTitle("");
     setNewTopicBody("");
     setIsDialogOpen(false);
@@ -126,7 +131,7 @@ export default function Home() {
     // choose a first forum
     if (firstForum) {
       // setForumID(firstForum.id);
-      router.push(`/?forum=${firstForum.id}`);
+      router.push(`/?forum=${(firstForum as any).id}`);
       return;
     }
 
@@ -139,11 +144,13 @@ export default function Home() {
     );
   }
 
-  const alreadyJoined = me?.root?.forums?.some((s) => s?.id === forum?.id);
+  const alreadyJoined = meState?.root?.forums?.some(
+    (s) => s?.$jazz.id === forum?.$jazz.id,
+  );
 
   const uniqueForums =
-    me?.root?.forums?.filter(
-      (f, i, self) => i === self.findIndex((t) => t?.id === f?.id),
+    meState?.root?.forums?.filter(
+      (f, i, self) => i === self.findIndex((t) => t?.$jazz.id === f?.$jazz.id),
     ) ?? [];
 
   return (
@@ -169,7 +176,7 @@ export default function Home() {
                 <Button
                   onClick={() => {
                     if (alreadyJoined) return;
-                    me?.root?.forums?.push(forum!);
+                    meState?.root?.forums.$jazz?.push(forum!);
                   }}
                   variant="outline"
                   size="sm"
@@ -254,8 +261,8 @@ export default function Home() {
           <div className="grid gap-3 max-w-3xl mx-auto">
             {forum?.topics.map((topic) => (
               <Link
-                key={topic.id}
-                href={`/topic/${topic.id}?forum=${forumID}`}
+                key={topic.$jazz.id}
+                href={`/topic/${topic.$jazz.id}?forum=${forumID}`}
                 className="flex flex-col p-4 hover:bg-secondary/50 bg-secondary rounded-lg border border-border shadow-sm card-hover-effect"
               >
                 <div className="flex justify-between mb-2">
@@ -282,17 +289,19 @@ export default function Home() {
                         key={idx}
                         className="h-12 w-12 rounded-md border border-border overflow-hidden relative"
                       >
-                        <ProgressiveImg key={idx} image={image}>
-                          {({ src }) => {
-                            return src ? (
-                              <img
-                                src={src || ""}
-                                alt=""
-                                className="object-cover h-full w-full"
-                              />
-                            ) : null;
-                          }}
-                        </ProgressiveImg>
+                        {image?.id ? (
+                          <JazzImage
+                            imageId={image.$jazz.id}
+                            width={48}
+                            height={48}
+                            alt=""
+                            style={{
+                              objectFit: "cover",
+                              width: "100%",
+                              height: "100%",
+                            }}
+                          />
+                        ) : null}
                       </div>
                     ))}
                     {topic.images.length > 3 && (

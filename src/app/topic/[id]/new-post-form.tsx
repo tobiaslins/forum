@@ -5,7 +5,7 @@ import { Topic, Comment, Reactions, ListOfImages } from "@/schema";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Group, ImageDefinition } from "jazz-tools";
-import { createImage } from "jazz-tools/browser-media-images";
+import { createImage } from "jazz-tools/media";
 import { useAccount } from "jazz-tools/react";
 import { LightboxImage } from "@/components/lightbox-image";
 
@@ -18,6 +18,7 @@ export function NewPostForm({ topic }: { topic: Topic }) {
     e.preventDefault();
 
     if (!content.trim()) return;
+    if (!me) return;
 
     const group = Group.create({ owner: me });
     group.addMember("everyone", "reader");
@@ -33,20 +34,22 @@ export function NewPostForm({ topic }: { topic: Topic }) {
     const reactionsGroup = Group.create({ owner: me });
     reactionsGroup.addMember("everyone", "writer");
 
-    topic.comments?.push(
+    topic.comments?.$jazz?.push(
       Comment.create(
         {
           content,
           createdAt: Date.now(),
           likes: 0,
+          // parentComment not set for top-level
+          parentComment: undefined as any,
           reactions: Reactions.create([], { owner: reactionsGroup }),
-          images: ListOfImages.create(imgs, { owner: group }),
+          images: ListOfImages.create(imgs as any, { owner: group }),
         },
         { owner: group },
       ),
     );
 
-    topic.postCount += 1;
+    topic.$jazz.set("postCount", topic.postCount + 1);
     setContent("");
   };
 
