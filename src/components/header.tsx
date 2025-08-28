@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { MessageSquare, Sun, Moon, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,12 +13,23 @@ import {
 } from "@/components/ui/tooltip";
 import { UserMenu } from "@/components/user-menu";
 
-interface HeaderProps {
-  isDarkMode: boolean;
-  toggleDarkMode: () => void;
-}
-
-export function Header({ isDarkMode, toggleDarkMode }: HeaderProps) {
+export function Header() {
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  useEffect(() => {
+    // initialize from SSR-applied class or storage
+    const isDark = document.documentElement.classList.contains("dark");
+    setIsDarkMode(isDark);
+  }, []);
+  const toggleDarkMode = () => {
+    const next = !isDarkMode;
+    setIsDarkMode(next);
+    const cl = document.documentElement.classList;
+    if (next) cl.add("dark"); else cl.remove("dark");
+    try {
+      localStorage.setItem("theme", next ? "dark" : "light");
+      document.cookie = `theme=${next ? "dark" : "light"}; Path=/; Max-Age=31536000; SameSite=Lax`;
+    } catch {}
+  };
   const pathname = usePathname();
   const isTopicPage = pathname.includes("/topic/");
   const forumId = pathname.includes("?forum=")

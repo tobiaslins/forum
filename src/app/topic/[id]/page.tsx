@@ -1,6 +1,7 @@
 import { Topic } from "@/schema";
 import { RenderTopicPage } from "./components";
 import { getJazzWorker } from "@/app/jazz-worker";
+import { exportCoValue } from "jazz-tools";
 
 export default async function TopicPage({
   params,
@@ -16,10 +17,12 @@ export default async function TopicPage({
   const worker = await getJazzWorker();
   const topic = await Topic.load(id, {
     loadAs: worker,
-    resolve: { forum: true },
+    resolve: { forum: true, comments: { $each: true } },
   });
 
-  console.log(topic);
+  console.log(`Server Rendering`, topic?.title);
 
-  return <RenderTopicPage id={id} forumId={forumId} />;
+  return (
+    <RenderTopicPage id={id} forumId={forumId} preloaded={topic?.toJSON()} />
+  );
 }

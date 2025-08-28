@@ -20,12 +20,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { use, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { ReactionOverview } from "@/components/reactions";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Image as JazzImage, useAccount, useCoState } from "jazz-tools/react";
 import { Textarea } from "@/components/ui/textarea";
-import { Group, ImageDefinition } from "jazz-tools";
+import { Group, ImageDefinition, importContentPieces } from "jazz-tools";
 import { createImage } from "jazz-tools/media";
 import { LightboxImage } from "@/components/lightbox-image";
 
@@ -36,15 +36,17 @@ type CommentNode = {
 export function RenderTopicPage({
   forumId,
   id,
+  preloaded,
 }: {
   forumId: string;
   id: string;
+  preloaded: Topic;
 }) {
-  const subscribedTopic = useCoState(Topic, id as any, {
+  const subscribedTopic = useCoState(Topic, id, {
     resolve: { comments: { $each: true } },
   });
 
-  const topic = subscribedTopic;
+  const topic = subscribedTopic ?? preloaded ?? null;
   const organizeComments = (comments: Comment[]): CommentNode[] => {
     const commentMap = new Map<string, CommentNode>();
     const roots: CommentNode[] = [];
@@ -57,25 +59,19 @@ export function RenderTopicPage({
         children: [],
       };
 
-      // @ts-ignore loosen typing for id access
-      if ((comment as any)?.$jazz?.id) {
-        // @ts-ignore loosen typing for id access
-        commentMap.set((comment as any).$jazz.id, node);
+      if (comment.$jazz?.id) {
+        commentMap.set(comment.$jazz.id, node);
       }
     });
 
     comments.forEach((comment) => {
-      // @ts-ignore loosen typing for id access
-      if (!comment || !(comment as any).$jazz?.id) return;
+      if (!comment || !comment.$jazz?.id) return;
 
-      // @ts-ignore loosen typing for id access
-      const node = commentMap.get((comment as any).$jazz.id);
+      const node = commentMap.get(comment.$jazz.id);
       if (!node) return;
 
-      // @ts-ignore loosen typing for id access
-      if (comment.parentComment && (comment.parentComment as any).$jazz?.id) {
-        // @ts-ignore loosen typing for id access
-        const parent = commentMap.get((comment.parentComment as any).$jazz.id);
+      if (comment.parentComment && comment.parentComment.$jazz?.id) {
+        const parent = commentMap.get(comment.parentComment.$jazz.id);
         if (parent) {
           parent.children.push(node);
         }
@@ -89,15 +85,14 @@ export function RenderTopicPage({
 
   const renderComments = (nodes: CommentNode[]): React.ReactNode => {
     return nodes.map((node) => {
-      // @ts-ignore loosen typing for id access
-      if (!node.comment || !(node.comment as any).$jazz?.id) return null;
+      if (!node.comment || !node.comment.$jazz?.id) return null;
 
       return (
-        <div key={(node.comment as any).$jazz.id}>
+        <div key={node.comment.$jazz.id}>
           <CommentComponent comment={node.comment} topic={topic!} />
           {node.children.length > 0 && (
             <div className="ml-6 relative">
-              <div className="absolute left-0 top-0 bottom-0 border-l border-border -translate-x-[2px]" />
+              <div className="absolute left-0 top-0 bottom-0 border-border -translate-x-[2px]" />
               <div className="py-1">{renderComments(node.children)}</div>
             </div>
           )}
@@ -216,7 +211,7 @@ function CommentComponent({
           likes: 0,
           parentComment: comment,
           reactions: Reactions.create([], { owner: reactionsGroup }),
-          images: ListOfImages.create(imgs as any, { owner: group }),
+          images: ListOfImages.create(imgs, { owner: group }),
         },
         { owner: group },
       ),
