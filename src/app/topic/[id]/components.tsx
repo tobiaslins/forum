@@ -27,7 +27,6 @@ import { ProgressiveImg, useAccount, useCoState } from "jazz-tools/react";
 import { Textarea } from "@/components/ui/textarea";
 import { Group, ImageDefinition } from "jazz-tools";
 import { createImage } from "jazz-tools/browser-media-images";
-import { CursorSync } from "@/components/cursor-sync";
 import { LightboxImage } from "@/components/lightbox-image";
 
 type CommentNode = {

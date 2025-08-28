@@ -13,5 +13,13 @@ export default async function TopicPage({
   const { forum } = await searchParams;
   const forumId = forum || "";
 
+  const worker = await getJazzWorker();
+  const topic = await Topic.load(id, {
+    loadAs: worker,
+    resolve: { forum: true },
+  });
+
+  console.log(topic);
+
   return <RenderTopicPage id={id} forumId={forumId} />;
 }
