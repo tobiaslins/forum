@@ -3,7 +3,6 @@ import { Geist } from "next/font/google";
 import { JazzAndAuth } from "./jazz";
 import { Header } from "@/components/header";
 import { cookies } from "next/headers";
-import { Suspense } from "react";
 
 const geist = Geist({ subsets: ["latin"] });
 
@@ -43,9 +42,7 @@ export default async function RootLayout({
       >
         <JazzAndAuth>
           <Header />
-          <Suspense fallback={<div>Loading...</div>}>
-            <main className="min-h-[calc(100vh-3.5rem)]">{children}</main>
-          </Suspense>
+          <main className="min-h-[calc(100vh-3.5rem)]">{children}</main>
         </JazzAndAuth>
       </body>
     </html>

@@ -30,6 +30,7 @@ import { Sidebar } from "@/components/sidebar";
 import { MobileNav } from "@/components/mobile-nav";
 import { LightboxImage } from "@/components/lightbox-image";
 import { formatDistanceToNow } from "date-fns";
+import { useBetterSearchParams } from "@/hooks/use-better-searchparams";
 
 export default function Home() {
   const { me: meState } = useAccount(JazzAccount, {
@@ -37,21 +38,20 @@ export default function Home() {
   });
   const { me } = useAccount();
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const searchParams = useBetterSearchParams();
   const [forumID, setForumID] = useState<string>(
     (searchParams.get("forum") as string) ||
       ("co_zF5AYiGV3P3NFhAicXpqqcjP5KR" as string),
   );
+  const forum = useCoState(Forum, forumID, {
+    resolve: { topics: { $each: true } },
+  });
 
   const [newTopicImages, setNewTopicImages] = useState<File[]>([]);
   const [newTopicTitle, setNewTopicTitle] = useState("");
   const [newTopicBody, setNewTopicBody] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const hasAdded = useRef(false);
-
-  const forum = useCoState(Forum, forumID, {
-    resolve: { topics: { $each: true } },
-  });
 
   const createForum = (name: string) => {
     if (!me) return;
@@ -66,10 +66,10 @@ export default function Home() {
         cursorLocations: undefined as never,
       },
       { owner: group },
-    ) as any;
+    );
     meState?.root?.forums.$jazz?.push(newForum);
-    setForumID(newForum.id);
-    router.push(`/?forum=${newForum.id}`);
+    setForumID(newForum.$jazz.id);
+    router.push(`/?forum=${newForum.$jazz.id}`);
   };
 
   const newForum = searchParams.get("new-forum");
@@ -114,10 +114,7 @@ export default function Home() {
     );
 
     topic.$jazz.set("comments", []);
-    topic.$jazz.set(
-      "images",
-      ListOfImages.create(imgs as any, { owner: topicGroup }),
-    );
+    topic.$jazz.set("images", ListOfImages.create(imgs, { owner: topicGroup }));
 
     forum.topics.$jazz?.push(topic);
     setNewTopicTitle("");
@@ -131,7 +128,7 @@ export default function Home() {
     // choose a first forum
     if (firstForum) {
       // setForumID(firstForum.id);
-      router.push(`/?forum=${(firstForum as any).id}`);
+      router.push(`/?forum=${firstForum.$jazz.id}`);
       return;
     }
 
