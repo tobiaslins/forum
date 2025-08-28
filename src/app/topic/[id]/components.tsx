@@ -143,7 +143,11 @@ export function RenderTopicPage({
           <div className="flex items-center justify-between text-sm">
             <div className="flex items-center gap-2">
               <Avatar size="sm" src="/placeholder.svg" alt="Anonymous" />
-              <span className="text-muted-foreground">Posted by Anonymous</span>
+              <span className="text-muted-foreground">
+                Posted by{" "}
+                {topic?.$jazz?.getEdits()?.title?.by?.profile?.name ||
+                  "Anonymous"}
+              </span>
             </div>
             <div className="flex items-center gap-2">
               <Button variant="outline" size="sm" asChild className="text-xs">

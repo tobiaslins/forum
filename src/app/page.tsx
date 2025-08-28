@@ -308,7 +308,11 @@ export default function Home() {
                 )}
 
                 <div className="flex justify-between items-center mt-auto text-xs text-muted-foreground">
-                  <span>Posted by Anonymous</span>
+                  <span>
+                    Posted by{" "}
+                    {topic.$jazz.getEdits().title?.by?.profile?.name ||
+                      "Anonymous"}
+                  </span>
                   <div className="flex items-center gap-1">
                     <CalendarDays className="h-3 w-3" />
                     <span>
