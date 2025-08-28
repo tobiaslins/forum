@@ -39,10 +39,9 @@ export default function Home() {
   const { me } = useAccount();
   const router = useRouter();
   const searchParams = useBetterSearchParams();
-  const [forumID, setForumID] = useState<string>(
-    (searchParams.get("forum") as string) ||
-      ("co_zF5AYiGV3P3NFhAicXpqqcjP5KR" as string),
-  );
+
+  const forumID = searchParams.get("forum") || "co_zF5AYiGV3P3NFhAicXpqqcjP5KR";
+
   const forum = useCoState(Forum, forumID, {
     resolve: { topics: { $each: true } },
   });
@@ -68,7 +67,6 @@ export default function Home() {
       { owner: group },
     );
     meState?.root?.forums.$jazz?.push(newForum);
-    setForumID(newForum.$jazz.id);
     router.push(`/?forum=${newForum.$jazz.id}`);
   };
 
