@@ -4,8 +4,13 @@ import { JazzAccount } from "@/schema";
 
 let jazzWorker: InstanceOfSchema<typeof JazzAccount>;
 
+let worker: Awaited<ReturnType<typeof startWorker>>;
+
 export const getJazzWorker = async () => {
-  if (jazzWorker) return jazzWorker;
+  if (jazzWorker) {
+    await worker.waitForConnection();
+    return jazzWorker;
+  }
   console.log("Starting jazz worker");
   const res = await startWorker({
     AccountSchema: JazzAccount,
@@ -14,6 +19,7 @@ export const getJazzWorker = async () => {
   });
 
   jazzWorker = res.worker;
+  worker = res;
 
   return res.worker;
 };
